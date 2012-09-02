@@ -61,13 +61,6 @@ local function test_int_to_char()
   Assert.is_equal(Misc.int_to_char(97), 'a')
 end
 
-local function test_one_or_minus_one()
-  for i = 1, 99 do
-    local n = Misc.one_or_minus_one()
-    Assert.is_true(n == 1 or n == -1)
-  end
-end
-
 local function test_map()
   -- TODO
   local map = Map.new()
@@ -178,7 +171,6 @@ local function test_m2dir()
 end
 
 function TestAll.test_all()
-  test_one_or_minus_one()
   test_round()
   test_unittype_to_char() -- TODO
   test_distance()

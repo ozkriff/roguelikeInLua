@@ -24,11 +24,6 @@ function Misc.int_to_char(n)
   return string.char(n)
 end
 
-function Misc.one_or_minus_one()
-  local n = math.random(1, 2)
-  return ({-1, 1})[n]
-end
-
 local function table_print(tt, indent, done)
   done = done or {}
   indent = indent or 0
