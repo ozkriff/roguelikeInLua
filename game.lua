@@ -97,7 +97,7 @@ function Game:draw()
   -- self.screen:px_print(100, 100, 'test\ntest')
   -- self.screen:px_print(400, 50,
   --     'self.screen:line(100, 100, 200, 100)\n\z
-  --      self.screen:px_print(200, 50,\n')
+  --      self.screen:px_print(200, 50, \n')
   -- self.screen:printf(Symbols.Q)
   self.screen:refresh()
 end

@@ -9,21 +9,21 @@
 #include "lauxlib.h"
 
 /* TODO:
- * map_add_arrow(pos{y,x}, index)
- * map_remove_arrow(pos{y,x}, index)
- * map_set_char(pos{y,x}, code)
+ * map_add_arrow(pos{y, x}, index)
+ * map_remove_arrow(pos{y, x}, index)
+ * map_set_char(pos{y, x}, code)
  * map_set_offset() -> save to screen's C-struct
  * map_set_size(size{y, x})
  * map_draw()
- * log_set_pos(pos{y,x}) --> ???
+ * log_set_pos(pos{y, x}) --> ???
  * log_add_string(string) --> strcpy()
  * log_draw() --> ???
  * set_color(r, g, b, a)
  *   --> save to local variable 
  *       (in screen's C-structure)
- * draw_line(from{y ,x}, to{y, x})
+ * draw_line(from{y, x}, to{y, x})
  *   --> bresenham_line(x0, y0, x1, y1)
- * draw_rectangle(from{y,x}, to{y,x}) --> SDL_FillRect()
+ * draw_rectangle(from{y, x}, to{y, x}) --> SDL_FillRect()
  * screen_refresh() --> SDL_Flip(screen);
  * screen_clear()
  */

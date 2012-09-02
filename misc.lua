@@ -85,7 +85,7 @@ function Misc.deepcopy(t)
   end
   local mt = getmetatable(t)
   local res = {}
-  for k,v in pairs(t) do
+  for k, v in pairs(t) do
     if type(v) == 'table' then
       v = deepcopy(v)
     end
@@ -102,7 +102,7 @@ end
 -- metatables are ignored in the comparison.
 --
 -- For instance, say we have a List class, then
---   assert(deepcompare(List{1,2,3},{1,2,3},true))
+--   assert(deepcompare(List{1, 2, 3}, {1, 2, 3}, true))
 function Misc.deepcompare(t1, t2, ignore_mt)
   local ty1 = type(t1)
   local ty2 = type(t2)
@@ -116,15 +116,15 @@ function Misc.deepcompare(t1, t2, ignore_mt)
   if not ignore_mt and mt and mt.__eq then
     return t1 == t2
   end
-  for k1,v1 in pairs(t1) do
+  for k1, v1 in pairs(t1) do
     local v2 = t2[k1]
-    if v2 == nil or not Misc.deepcompare(v1,v2) then
+    if v2 == nil or not Misc.deepcompare(v1, v2) then
       return false
     end
   end
   for k2, v2 in pairs(t2) do
     local v1 = t1[k2]
-    if v1 == nil or not Misc.deepcompare(v1,v2) then
+    if v1 == nil or not Misc.deepcompare(v1, v2) then
       return false
     end
   end
@@ -132,7 +132,7 @@ function Misc.deepcompare(t1, t2, ignore_mt)
 end
 
 -- This creates a string representation of a table,
--- in a form like {[1]=10,[2]=20,["name"]="alice"}.
+-- in a form like {[1]=10, [2]=20, ["name"]="alice"}.
 -- Not very efficient, because of all the string
 -- concatentations, and will freak if given a table
 -- with cycles, i.e. with recursive references.

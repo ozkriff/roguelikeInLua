@@ -41,7 +41,7 @@ end
 function Bresenham.line(x0, y0, x1, y1, callback)
   local points = {}
   local count = 0
-  local result = Bresenham.los(x0, y0, x1, y1, function(x,y)
+  local result = Bresenham.los(x0, y0, x1, y1, function(x, y)
     if callback and not callback(x, y) then
       return false
     end
