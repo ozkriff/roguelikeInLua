@@ -475,15 +475,15 @@ static int screen_line(lua_State *L) {
 
 /* TODO */
 static int screen_px_print(lua_State *L) {
+  Vec2i pos;
   Screen *screen;
+  int args_count = lua_gettop(L);
+  assert(args_count == 4);
   assert(lua_isnumber(L, 2)
       && lua_isnumber(L, 3)
       && lua_isstring(L, 4));
-  Vec2i pos;
   pos.y = lua_tointeger(L, 2) - 1;
   pos.x = lua_tointeger(L, 3) - 1;
-  int args_count = lua_gettop(L);
-  assert(args_count == 4);
   screen = check_screen(L, 1);
   render_text(screen->screen, &screen->font,
       lua_tostring(L, 4), pos);
