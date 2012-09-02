@@ -301,17 +301,6 @@ static void render_text(
   }
 }
 
-static void text_printf(
-    SDL_Surface *screen, Font *f, char *s, Vec2i pos, ...)
-{
-  char buf[100];
-  va_list ap;
-  va_start(ap, pos);
-  vsprintf(buf, s, ap);
-  va_end(ap);
-  render_text(screen, f, buf, pos);
-}
-
 static Font build_font(SDL_Surface *surface, int w, int h) {
   Font font;
   font.bitmap = surface;
