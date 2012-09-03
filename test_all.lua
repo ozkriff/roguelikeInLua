@@ -73,7 +73,6 @@ local function test_misc_dump()
   -- Assert.is_equal(Misc.dump({abc, cde}), '{abc, } ')
 end
 
-
 local function test_int_to_char()
   Assert.is_equal(Misc.int_to_char(65), 'A')
   Assert.is_equal(Misc.int_to_char(66), 'B')
@@ -181,7 +180,6 @@ local function test_pathfinder()
       }
   )
 end
-
 
 local function test_misc_neib()
   local a = {y = 2, x = 2}
