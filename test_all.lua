@@ -183,10 +183,26 @@ local function test_pathfinder()
 end
 
 local function test_m2dir()
-  -- TODO: add more tests
-  Assert.is_equal(
-      Misc.m2dir({y = 2, x = 1}, {y = 1, x = 1}),
-      1)
+  local a = {y = 2, x = 2}
+  local up = {y = 1, x = 2}
+  local up_right = {y = 1, x = 3}
+  local right = {y = 2, x = 3}
+  local down_right = {y = 3, x = 3}
+  local down = {y = 3, x = 2}
+  local down_left = {y = 3, x = 1}
+  local left = {y = 2, x = 1}
+  local up_left = {y = 1, x = 1}
+  local distant_point = {y = 4, x = 4}
+  Assert.is_equal(Misc.m2dir(a, up), 1)
+  Assert.is_equal(Misc.m2dir(a, up_right), 2)
+  Assert.is_equal(Misc.m2dir(a, right), 3)
+  Assert.is_equal(Misc.m2dir(a, down_right), 4)
+  Assert.is_equal(Misc.m2dir(a, down), 5)
+  Assert.is_equal(Misc.m2dir(a, down_left), 6)
+  Assert.is_equal(Misc.m2dir(a, left), 7)
+  Assert.is_equal(Misc.m2dir(a, up_left), 8)
+  Assert.is_nil(Misc.m2dir(a, distant_point))
+  Assert.is_nil(Misc.m2dir(a, a))
 end
 
 function TestAll.test_all()
