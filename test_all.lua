@@ -181,47 +181,41 @@ local function test_pathfinder()
   )
 end
 
+local dir = {
+  a = {y = 2, x = 2},
+  up = {y = 1, x = 2},
+  up_right = {y = 1, x = 3},
+  right = {y = 2, x = 3},
+  down_right = {y = 3, x = 3},
+  down = {y = 3, x = 2},
+  down_left = {y = 3, x = 1},
+  left = {y = 2, x = 1},
+  up_left = {y = 1, x = 1}
+}
+
 local function test_misc_neib()
-  local a = {y = 2, x = 2}
-  local up = {y = 1, x = 2}
-  local up_right = {y = 1, x = 3}
-  local right = {y = 2, x = 3}
-  local down_right = {y = 3, x = 3}
-  local down = {y = 3, x = 2}
-  local down_left = {y = 3, x = 1}
-  local left = {y = 2, x = 1}
-  local up_left = {y = 1, x = 1}
-  Assert.is_equal(Misc.neib(a, 1), up)
-  Assert.is_equal(Misc.neib(a, 2), up_right)
-  Assert.is_equal(Misc.neib(a, 3), right)
-  Assert.is_equal(Misc.neib(a, 4), down_right)
-  Assert.is_equal(Misc.neib(a, 5), down)
-  Assert.is_equal(Misc.neib(a, 6), down_left)
-  Assert.is_equal(Misc.neib(a, 7), left)
-  Assert.is_equal(Misc.neib(a, 8), up_left)
+  Assert.is_equal(Misc.neib(dir.a, 1), dir.up)
+  Assert.is_equal(Misc.neib(dir.a, 2), dir.up_right)
+  Assert.is_equal(Misc.neib(dir.a, 3), dir.right)
+  Assert.is_equal(Misc.neib(dir.a, 4), dir.down_right)
+  Assert.is_equal(Misc.neib(dir.a, 5), dir.down)
+  Assert.is_equal(Misc.neib(dir.a, 6), dir.down_left)
+  Assert.is_equal(Misc.neib(dir.a, 7), dir.left)
+  Assert.is_equal(Misc.neib(dir.a, 8), dir.up_left)
 end
 
 local function test_m2dir()
-  local a = {y = 2, x = 2}
-  local up = {y = 1, x = 2}
-  local up_right = {y = 1, x = 3}
-  local right = {y = 2, x = 3}
-  local down_right = {y = 3, x = 3}
-  local down = {y = 3, x = 2}
-  local down_left = {y = 3, x = 1}
-  local left = {y = 2, x = 1}
-  local up_left = {y = 1, x = 1}
   local distant_point = {y = 4, x = 4}
-  Assert.is_equal(Misc.m2dir(a, up), 1)
-  Assert.is_equal(Misc.m2dir(a, up_right), 2)
-  Assert.is_equal(Misc.m2dir(a, right), 3)
-  Assert.is_equal(Misc.m2dir(a, down_right), 4)
-  Assert.is_equal(Misc.m2dir(a, down), 5)
-  Assert.is_equal(Misc.m2dir(a, down_left), 6)
-  Assert.is_equal(Misc.m2dir(a, left), 7)
-  Assert.is_equal(Misc.m2dir(a, up_left), 8)
-  Assert.is_nil(Misc.m2dir(a, distant_point))
-  Assert.is_nil(Misc.m2dir(a, a))
+  Assert.is_equal(Misc.m2dir(dir.a, dir.up), 1)
+  Assert.is_equal(Misc.m2dir(dir.a, dir.up_right), 2)
+  Assert.is_equal(Misc.m2dir(dir.a, dir.right), 3)
+  Assert.is_equal(Misc.m2dir(dir.a, dir.down_right), 4)
+  Assert.is_equal(Misc.m2dir(dir.a, dir.down), 5)
+  Assert.is_equal(Misc.m2dir(dir.a, dir.down_left), 6)
+  Assert.is_equal(Misc.m2dir(dir.a, dir.left), 7)
+  Assert.is_equal(Misc.m2dir(dir.a, dir.up_left), 8)
+  Assert.is_nil(Misc.m2dir(dir.a, distant_point))
+  Assert.is_nil(Misc.m2dir(dir.a, dir.a))
 end
 
 local function test_misc_id_to_key()
