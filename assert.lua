@@ -17,6 +17,10 @@ function Assert.is_true(real)
   assert(real)
 end
 
+function Assert.is_false(real)
+  assert(not real)
+end
+
 function Assert.is_nil(real)
   assert(real == nil,
       'Expected nil but got ' .. (real or 'nil'))
