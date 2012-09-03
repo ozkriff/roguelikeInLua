@@ -173,12 +173,9 @@ function Misc.m2dir(a, b)
   if Misc.distance(a, b) ~= 1 then
     return nil
   end
-  local dx = b.x - a.x
-  local dy = b.y - a.y
+  local d = {y = b.y - a.y, x = b.x - a.x}
   for i = 1, 8 do
-    if dx == dir_to_pos_diff[i].x
-        and dy == dir_to_pos_diff[i].y
-    then
+    if Misc.deepcompare(d, dir_to_pos_diff[i]) then
       return i
     end
   end
