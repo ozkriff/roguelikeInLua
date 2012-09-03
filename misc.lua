@@ -163,6 +163,7 @@ local dir_to_pos_diff = {
 -- TODO test rename
 -- Get tile's neiborhood by it's index.
 function Misc.neib(pos, neib_index)
+  assert(neib_index >= 1 and neib_index <= 8)
   local dx = dir_to_pos_diff[neib_index].x
   local dy = dir_to_pos_diff[neib_index].y
   return { y = pos.y + dy, x = pos.x + dx}
