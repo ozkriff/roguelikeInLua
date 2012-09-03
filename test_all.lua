@@ -237,6 +237,25 @@ local function test_misc_id_to_key()
   Assert.is_equal(Misc.id_to_key(t, 'string'), -1)
 end
 
+local function test_misc_deepcompare()
+  local a = {1, 2, 3}
+  local b = {1, 2, 3}
+  local c = {1, 2, 3, 4}
+  local d = {1, 2}
+  local e = {1, 2, {3, 'ff'}, 4}
+  local f = {1, 2, {3, 'ff'}, 4}
+  local g = {1, 2, {3, 'ff', {}}, 4}
+  local empty = {}
+  Assert.is_true(Misc.deepcompare(a, b))
+  Assert.is_false(Misc.deepcompare(a, c))
+  Assert.is_false(Misc.deepcompare(a, d))
+  Assert.is_false(Misc.deepcompare(a, nil))
+  Assert.is_false(Misc.deepcompare(empty, nil))
+  Assert.is_true(Misc.deepcompare(nil, nil))
+  Assert.is_true(Misc.deepcompare(e, f))
+  Assert.is_false(Misc.deepcompare(e, g))
+end
+
 function TestAll.test_all()
   test_round()
   test_unittype_to_char() -- TODO
@@ -251,6 +270,7 @@ function TestAll.test_all()
   test_bresenham()
   test_misc_to_string()
   test_misc_dump()
+  test_misc_deepcompare()
   -- test_pathfinder()
   -- test_main() -- TODO fix
   print('All tests are Ok')
