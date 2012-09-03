@@ -65,6 +65,15 @@ local function test_misc_to_string()
   -- Assert.is_equal(Misc.to_string({3, 4}), '\'3\'\n')
 end
 
+-- TODO add more tests
+local function test_misc_dump()
+  Assert.is_equal(Misc.dump(1), '1')
+  Assert.is_equal(Misc.dump(nil), 'nil')
+  Assert.is_equal(Misc.dump({}), '{ } ')
+  -- Assert.is_equal(Misc.dump({abc, cde}), '{abc, } ')
+end
+
+
 local function test_int_to_char()
   Assert.is_equal(Misc.int_to_char(65), 'A')
   Assert.is_equal(Misc.int_to_char(66), 'B')
@@ -191,6 +200,7 @@ function TestAll.test_all()
   test_time_system()
   test_bresenham()
   test_misc_to_string()
+  test_misc_dump()
   -- test_pathfinder()
   -- test_main() -- TODO fix
   print('All tests are Ok')
