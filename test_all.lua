@@ -55,6 +55,16 @@ local function test_distance()
   Assert.is_equal(Misc.distance(a, f), 4)
 end
 
+-- TODO add more tests
+local function test_misc_to_string()
+  Assert.is_equal(Misc.to_string(1), '1')
+  Assert.is_equal(Misc.to_string(), 'nil')
+  Assert.is_equal(Misc.to_string(nil), 'nil')
+  Assert.is_equal(Misc.to_string(1 + 4), '5')
+  Assert.is_equal(Misc.to_string({3}), '\'3\'\n')
+  -- Assert.is_equal(Misc.to_string({3, 4}), '\'3\'\n')
+end
+
 local function test_int_to_char()
   Assert.is_equal(Misc.int_to_char(65), 'A')
   Assert.is_equal(Misc.int_to_char(66), 'B')
@@ -180,6 +190,7 @@ function TestAll.test_all()
   test_map()
   test_time_system()
   test_bresenham()
+  test_misc_to_string()
   -- test_pathfinder()
   -- test_main() -- TODO fix
   print('All tests are Ok')
