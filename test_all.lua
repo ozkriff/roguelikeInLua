@@ -9,6 +9,7 @@ local Bresenham = require 'bresenham'
 local Pathfinder = require 'pathfinder'
 local Symbols = require 'symbols'
 local Assert = require 'assert'
+local Tr = require 'tr'
 
 local TestAll = {}
 TestAll.__index = TestAll
@@ -258,6 +259,13 @@ local function test_misc_deepcopy()
   Assert.is_equal(a[1], 1)
 end
 
+local function test_tr()
+  local tr = Tr.new('rus')
+  Assert.is_equal(tr'Hi', 'Привет')
+  Assert.is_equal(tr'Bye', 'Пока')
+  Assert.is_equal(tr'What', 'What')
+end
+
 function TestAll.test_all()
   test_round()
   test_unittype_to_char() -- TODO
@@ -274,6 +282,7 @@ function TestAll.test_all()
   test_misc_dump()
   test_misc_deepcompare()
   test_misc_deepcopy()
+  test_tr()
   -- test_pathfinder()
   -- test_main() -- TODO fix
   print('All tests are Ok')
