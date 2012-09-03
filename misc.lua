@@ -100,9 +100,6 @@ end
 -- if two objects of the same type support __eq this
 -- will be used. If the third parameter is true then
 -- metatables are ignored in the comparison.
---
--- For instance, say we have a List class, then
---   assert(deepcompare(List{1, 2, 3}, {1, 2, 3}, true))
 function Misc.deepcompare(t1, t2, ignore_mt)
   local ty1 = type(t1)
   local ty2 = type(t2)
