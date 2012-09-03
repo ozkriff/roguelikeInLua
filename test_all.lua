@@ -50,7 +50,7 @@ local function test_distance()
   Assert.is_equal(Misc.distance(a, a), 0)
   Assert.is_equal(Misc.distance(a, b), 1)
   Assert.is_equal(Misc.distance(a, c), 1)
-  -- Assert.is_equal(Misc.distance(a, d), 3) -- TODO
+  Assert.is_equal(Misc.distance(a, d), 2)
   Assert.is_equal(Misc.distance(a, e), 3)
   Assert.is_equal(Misc.distance(a, f), 4)
 end
