@@ -54,7 +54,6 @@ function Player:fire()
   -- g.screen:move(pos.y, pos.x)
   -- g.screen:refresh()
   while char ~= 'f' do
-    print('OLOLLO')
     if directions[char] then
       local new_pos = {}
       pos.x = pos.x + direction_to_diff_map[directions[char]].x
