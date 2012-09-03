@@ -256,6 +256,14 @@ local function test_misc_deepcompare()
   Assert.is_false(Misc.deepcompare(e, g))
 end
 
+local function test_misc_deepcopy()
+  local a = {1, 2, 3}
+  local b = Misc.deepcopy(a)
+  Assert.is_equal(a, b)
+  b[1] = 4
+  Assert.is_equal(a[1], 1)
+end
+
 function TestAll.test_all()
   test_round()
   test_unittype_to_char() -- TODO
@@ -271,6 +279,7 @@ function TestAll.test_all()
   test_misc_to_string()
   test_misc_dump()
   test_misc_deepcompare()
+  test_misc_deepcopy()
   -- test_pathfinder()
   -- test_main() -- TODO fix
   print('All tests are Ok')
