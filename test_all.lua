@@ -226,10 +226,24 @@ local function test_m2dir()
   Assert.is_nil(Misc.m2dir(a, a))
 end
 
+local function test_misc_id_to_key()
+  local t = {
+    {id = 1},
+    [7] = {id = 2},
+    ['test'] = {id = 9},
+    [-1] = {id = 'string'}
+  }
+  Assert.is_equal(Misc.id_to_key(t, 1), 1)
+  Assert.is_equal(Misc.id_to_key(t, 2), 7)
+  Assert.is_equal(Misc.id_to_key(t, 9), 'test')
+  Assert.is_equal(Misc.id_to_key(t, 'string'), -1)
+end
+
 function TestAll.test_all()
   test_round()
   test_unittype_to_char() -- TODO
   test_distance()
+  test_misc_id_to_key()
   test_misc_neib()
   test_m2dir()
   test_int_to_char()
