@@ -150,14 +150,14 @@ function Misc.dump(o)
 end
 
 local dir_to_pos_diff = {
-  {y = 1, x = 0},
-  {y = 1, x = 1},
-  {y = 0, x = 1},
-  {y = -1, x = 1},
   {y = -1, x = 0},
-  {y = -1, x = -1},
-  {y = 0, x = -1},
+  {y = -1, x = 1},
+  {y = 0, x = 1},
+  {y = 1, x = 1},
+  {y = 1, x = 0},
   {y = 1, x = -1},
+  {y = 0, x = -1},
+  {y = -1, x = -1},
 }
 
 -- TODO test rename
@@ -170,8 +170,8 @@ end
 
 -- TODO test rename
 function Misc.m2dir(a, b)
-  local dx = a.x - b.x
-  local dy = a.y - b.y
+  local dx = b.x - a.x
+  local dy = b.y - a.y
   for i = 1, 8 do
     if dx == dir_to_pos_diff[i].x
         and dy == dir_to_pos_diff[i].y
