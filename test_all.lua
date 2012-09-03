@@ -182,6 +182,27 @@ local function test_pathfinder()
   )
 end
 
+
+local function test_misc_neib()
+  local a = {y = 2, x = 2}
+  local up = {y = 1, x = 2}
+  local up_right = {y = 1, x = 3}
+  local right = {y = 2, x = 3}
+  local down_right = {y = 3, x = 3}
+  local down = {y = 3, x = 2}
+  local down_left = {y = 3, x = 1}
+  local left = {y = 2, x = 1}
+  local up_left = {y = 1, x = 1}
+  Assert.is_equal(Misc.neib(a, 1), up)
+  Assert.is_equal(Misc.neib(a, 2), up_right)
+  Assert.is_equal(Misc.neib(a, 3), right)
+  Assert.is_equal(Misc.neib(a, 4), down_right)
+  Assert.is_equal(Misc.neib(a, 5), down)
+  Assert.is_equal(Misc.neib(a, 6), down_left)
+  Assert.is_equal(Misc.neib(a, 7), left)
+  Assert.is_equal(Misc.neib(a, 8), up_left)
+end
+
 local function test_m2dir()
   local a = {y = 2, x = 2}
   local up = {y = 1, x = 2}
@@ -209,6 +230,7 @@ function TestAll.test_all()
   test_round()
   test_unittype_to_char() -- TODO
   test_distance()
+  test_misc_neib()
   test_m2dir()
   test_int_to_char()
   -- test_screen()
