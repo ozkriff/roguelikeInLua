@@ -170,6 +170,9 @@ end
 
 -- TODO test rename
 function Misc.m2dir(a, b)
+  if Misc.distance(a, b) ~= 1 then
+    return nil
+  end
   local dx = b.x - a.x
   local dy = b.y - a.y
   for i = 1, 8 do
