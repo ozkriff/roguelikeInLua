@@ -244,4 +244,4 @@ function TestAll.test_all()
   print('All tests are Ok')
 end
 
-return TestAll
+TestAll.test_all()

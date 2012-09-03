@@ -22,7 +22,6 @@ local Log = require 'log'
 local Map = require 'map'
 local Pathfinder = require 'pathfinder'
 local Game = require 'game'
-local Test = require 'test_all'
 
 function main()
   math.randomseed(os.time())
@@ -50,5 +49,4 @@ function main()
   game:close()
 end
 
-Test.test_all()
 main()
