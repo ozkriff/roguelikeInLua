@@ -15,7 +15,6 @@ end
 function Misc.distance(from, to)
   local dx = math.abs(to.x - from.x)
   local dy = math.abs(to.y - from.y)
-  local n = math.sqrt(dx * dx + dy * dy)
   local n = math.sqrt(dx ^ 2 + dy ^ 2)
   return Misc.round(n)
 end
