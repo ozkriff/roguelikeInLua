@@ -50,16 +50,8 @@ return function()
   end
 
   self.clamp_pos = function(pos)
-    if pos.x < 1 then
-      pos.x = 1
-    elseif pos.x > size.x then
-      pos.x = size.x
-    end
-    if pos.y < 1 then
-      pos.y = 1
-    elseif pos.y > size.y then
-      pos.y = size.y
-    end
+    pos.x = Misc.clamp(pos.x, 1, size.x)
+    pos.y = Misc.clamp(pos.y, 1, size.y)
   end
 
   self.is_tile_free = function(pos)
