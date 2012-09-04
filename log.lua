@@ -23,8 +23,6 @@ end
 
 function Log:add(string)
   table.insert(self.strings, 1, string)
-  -- table.insert(self.strings, 1, self.n .. ': ' .. string)
-  -- print('LOG DEBUG: ' .. string)
   self.n = self.n + 1
 end
 
