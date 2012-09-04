@@ -268,7 +268,7 @@ end
 
 function TestAll.test_all()
   test_round()
-  test_unittype_to_char() -- TODO
+  test_unittype_to_char()
   test_distance()
   test_misc_id_to_key()
   test_misc_neib()
