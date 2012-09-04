@@ -10,6 +10,7 @@ local Pathfinder = require 'pathfinder'
 local Symbols = require 'symbols'
 local Assert = require 'assert'
 local Tr = require 'tr'
+local PriorityQueue = require 'priority_queue'
 
 local TestAll = {}
 TestAll.__index = TestAll
@@ -266,6 +267,27 @@ local function test_tr()
   Assert.is_equal(tr'What', 'What')
 end
 
+local function test_priority_queue()
+  local queue = PriorityQueue.new()
+  Assert.is_true(queue:is_empty())
+  queue:push('[1]', 1)
+  queue:push('[2]', 5)
+  queue:push('[3]', 5)
+  queue:push('[4]', 3)
+  Assert.is_equal(queue:pop(), '[2]')
+  Assert.is_equal(queue:pop(), '[3]')
+  Assert.is_equal(queue:pop(), '[4]')
+  Assert.is_equal(queue:pop(), '[1]')
+  Assert.is_true(queue:is_empty())
+  queue:push('[1]', -1)
+  queue:push('[2]', -5)
+  queue:push('[3]', -3)
+  Assert.is_equal(queue:pop(), '[1]')
+  Assert.is_equal(queue:pop(), '[3]')
+  Assert.is_equal(queue:pop(), '[2]')
+  Assert.is_true(queue:is_empty())
+end
+
 function TestAll.test_all()
   test_round()
   test_unittype_to_char()
@@ -283,6 +305,7 @@ function TestAll.test_all()
   test_misc_deepcompare()
   test_misc_deepcopy()
   test_tr()
+  test_priority_queue()
   -- test_pathfinder()
   -- test_main() -- TODO fix
   print('All tests are Ok')
