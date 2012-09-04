@@ -7,7 +7,7 @@ local Assert = {}
 function Assert.is_equal(real, expected)
   assert(real)
   assert(expected)
-  assert(Misc.deepcompare(real, expected),
+  assert(Misc.compare(real, expected),
       'Expected <<< ' .. Misc.dump(expected) .. ' >>>, ' ..
       'but got <<< ' .. Misc.dump(real) .. ' >>>')
 end

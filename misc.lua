@@ -93,7 +93,7 @@ end
 -- This function recursively copies a table's contents,
 -- and ensures that metatables are preserved.
 -- That is, it will correctly clone a pure Lua object.
-function Misc.deepcopy(t)
+function Misc.copy(t)
   if type(t) ~= 'table' then
     return t
   end
@@ -101,7 +101,7 @@ function Misc.deepcopy(t)
   local res = {}
   for k, v in pairs(t) do
     if type(v) == 'table' then
-      v = deepcopy(v)
+      v = copy(v)
     end
     res[k] = v
   end
@@ -114,7 +114,7 @@ end
 -- if two objects of the same type support __eq this
 -- will be used. If the third parameter is true then
 -- metatables are ignored in the comparison.
-function Misc.deepcompare(t1, t2, ignore_mt)
+function Misc.compare(t1, t2, ignore_mt)
   local ty1 = type(t1)
   local ty2 = type(t2)
   if ty1 ~= ty2 then return false end
@@ -129,13 +129,13 @@ function Misc.deepcompare(t1, t2, ignore_mt)
   end
   for k1, v1 in pairs(t1) do
     local v2 = t2[k1]
-    if v2 == nil or not Misc.deepcompare(v1, v2) then
+    if v2 == nil or not Misc.compare(v1, v2) then
       return false
     end
   end
   for k2, v2 in pairs(t2) do
     local v1 = t1[k2]
-    if v1 == nil or not Misc.deepcompare(v1, v2) then
+    if v1 == nil or not Misc.compare(v1, v2) then
       return false
     end
   end
@@ -187,7 +187,7 @@ function Misc.m2dir(a, b)
   end
   local d = {y = b.y - a.y, x = b.x - a.x}
   for i = 1, 8 do
-    if Misc.deepcompare(d, dir_to_pos_diff[i]) then
+    if Misc.compare(d, dir_to_pos_diff[i]) then
       return i
     end
   end

@@ -9,7 +9,7 @@ return function()
   local screen
 
   self.set_size = function(new_size)
-    size = Misc.deepcopy(new_size)
+    size = Misc.copy(new_size)
     for y = 1, size.y do
       self[y] = {}
       for x = 1, size.x do

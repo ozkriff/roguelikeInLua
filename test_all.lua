@@ -233,7 +233,7 @@ local function test_misc_id_to_key()
   Assert.is_equal(Misc.id_to_key(t, 'string'), -1)
 end
 
-local function test_misc_deepcompare()
+local function test_misc_compare()
   local a = {1, 2, 3}
   local b = {1, 2, 3}
   local c = {1, 2, 3, 4}
@@ -242,19 +242,19 @@ local function test_misc_deepcompare()
   local f = {1, 2, {3, 'ff'}, 4}
   local g = {1, 2, {3, 'ff', {}}, 4}
   local empty = {}
-  Assert.is_true(Misc.deepcompare(a, b))
-  Assert.is_false(Misc.deepcompare(a, c))
-  Assert.is_false(Misc.deepcompare(a, d))
-  Assert.is_false(Misc.deepcompare(a, nil))
-  Assert.is_false(Misc.deepcompare(empty, nil))
-  Assert.is_true(Misc.deepcompare(nil, nil))
-  Assert.is_true(Misc.deepcompare(e, f))
-  Assert.is_false(Misc.deepcompare(e, g))
+  Assert.is_true(Misc.compare(a, b))
+  Assert.is_false(Misc.compare(a, c))
+  Assert.is_false(Misc.compare(a, d))
+  Assert.is_false(Misc.compare(a, nil))
+  Assert.is_false(Misc.compare(empty, nil))
+  Assert.is_true(Misc.compare(nil, nil))
+  Assert.is_true(Misc.compare(e, f))
+  Assert.is_false(Misc.compare(e, g))
 end
 
-local function test_misc_deepcopy()
+local function test_misc_copy()
   local a = {1, 2, 3}
-  local b = Misc.deepcopy(a)
+  local b = Misc.copy(a)
   Assert.is_equal(a, b)
   b[1] = 4
   Assert.is_equal(a[1], 1)
@@ -312,8 +312,8 @@ function TestAll.test_all()
   test_bresenham()
   test_misc_to_string()
   test_misc_dump()
-  test_misc_deepcompare()
-  test_misc_deepcopy()
+  test_misc_compare()
+  test_misc_copy()
   test_tr()
   test_priority_queue()
   -- test_pathfinder()

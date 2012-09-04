@@ -33,7 +33,7 @@ return function()
   end
 
   self.set_pos = function(new_pos)
-    pos = Misc.deepcopy(new_pos)
+    pos = Misc.copy(new_pos)
   end
 
   self.pos = function()
