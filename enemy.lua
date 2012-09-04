@@ -32,7 +32,7 @@ function Enemy:get_new_pos_djikstra()
   local g = self.game
   local pf = g.pathfinder
   local pos
-  local path = pf:get_path(self.pos, g.player.pos)
+  local path = pf.get_path(self.pos, g.player.pos)
   assert(#path >= 2)
   return path[2]
 end
@@ -47,8 +47,8 @@ function Enemy:do_turn()
   end
   local dist = Misc.distance(g.player.pos, self.pos)
   if dist < g.max_see_distance then
-    -- local new_pos = self:get_new_pos_djikstra()
-    local new_pos = self:get_new_pos_simple()
+    local new_pos = self:get_new_pos_djikstra()
+    -- local new_pos = self:get_new_pos_simple()
     if g:is_position_free(new_pos) then
       g.map[self.pos.y][self.pos.x].unit = nil
       self.pos = new_pos

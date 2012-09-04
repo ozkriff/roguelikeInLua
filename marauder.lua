@@ -32,7 +32,7 @@ function main()
   -- map.set_pos({y = 1, x = 1}) -- TODO: in pixels
   map.set_screen(screen) -- TODO: map_viewer
 
-  local pathfinder = Pathfinder.new(map)
+  local pathfinder = Pathfinder(map)
 
   local log = Log()
   log.set_pos({y = 300, x = 10}) -- in pixels
