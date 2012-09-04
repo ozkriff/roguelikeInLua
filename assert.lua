@@ -3,7 +3,6 @@
 local Misc = require 'misc'
 
 local Assert = {}
-Assert.__index = Assert
 
 function Assert.is_equal(real, expected)
   assert(real)
