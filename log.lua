@@ -5,8 +5,7 @@ Log.__index = Log
 
 function Log.new()
   local new_log = {
-    strings = {},
-    n = 1
+    strings = {}
   }
   return setmetatable(new_log, Log)
 end
@@ -23,7 +22,6 @@ end
 
 function Log:add(string)
   table.insert(self.strings, 1, string)
-  self.n = self.n + 1
 end
 
 return Log
