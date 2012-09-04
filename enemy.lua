@@ -13,7 +13,6 @@ function Enemy:get_new_pos_simple()
   local g = self.game
   local pos = {y = self.pos.y, x = self.pos.x}
   -- TODO replace with dijkstra or a-star
-  -- TODO: extruct get_next_tile(?) method
   if g.player.pos.x < self.pos.x then
     pos.x = self.pos.x - 1
   end
