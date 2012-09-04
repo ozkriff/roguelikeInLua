@@ -81,7 +81,7 @@ function Pathfinder:process_neibor(pos, neib_pos)
     -- print('inserting')
     table.insert(self.queue, neib_pos)
     self.map[neib_pos.y][neib_pos.x].current_cost = newcost
-    self.map[neib_pos.y][neib_pos.x].parent = Misc.m2dir(pos, neib_pos)
+    self.map[neib_pos.y][neib_pos.x].parent = Misc.m2dir(neib_pos, pos)
   end
 end
 

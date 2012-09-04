@@ -19,7 +19,7 @@ return function()
           unit = nil,
           is_seen = false,
           cost = math.huge,
-          parent_dir = 1 -- TODO: ?
+          parent = 1 -- TODO: ?
         }
       end
     end
