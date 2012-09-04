@@ -49,7 +49,7 @@ typedef enum {
   CHAR_Z = 10,
   CHAR_AT = 11, /* '@' */
   CHAR_POINT = 12, /* '.' */
-  CHAR_HASH = 13 /* TODO: '#' */
+  CHAR_HASH = 13 /* '#' */
 } CharacterCode;
 
 typedef struct {
