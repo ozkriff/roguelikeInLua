@@ -1,13 +1,11 @@
 -- See LICENSE file for copyright and license details
 
-local Tr = {}
-
 local locales = {
   rus = require 'tr/rus',
   -- ger = require 'tr/ger',
 }
 
-function Tr.new(lang)
+return function(lang)
   local locale = nil
   if lang and locales[lang] then
     locale = locales[lang]
@@ -20,5 +18,3 @@ function Tr.new(lang)
     end
   end
 end
-
-return Tr

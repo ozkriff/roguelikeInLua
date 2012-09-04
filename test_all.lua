@@ -258,7 +258,7 @@ local function test_misc_copy()
 end
 
 local function test_tr()
-  local tr = Tr.new('rus')
+  local tr = Tr('rus')
   Assert.is_equal(tr'Hi', 'Привет')
   Assert.is_equal(tr'Bye', 'Пока')
   Assert.is_equal(tr'What', 'What')
