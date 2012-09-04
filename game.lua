@@ -126,7 +126,7 @@ function Game:add_unit(unit)
   -- unit.id = #self.units + 1
   unit.id = #self.units
   unit.game = self -- TODO
-  self.time_system:add_actor(unit, unit.id)
+  self.time_system.add_actor(unit, unit.id)
   self.map[unit.pos.y][unit.pos.x].unit = true
 end
 
@@ -206,7 +206,7 @@ end
 
 function Game:mainloop()
   while self.is_running do
-    self.time_system:step()
+    self.time_system.step()
   end
 end
 

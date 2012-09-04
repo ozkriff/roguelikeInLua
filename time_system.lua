@@ -2,49 +2,46 @@
 
 local Misc = require 'misc'
 
-local TimeSystem = {}
-TimeSystem.__index = TimeSystem
+return function()
+  local self = {}
 
-function TimeSystem.new()
-  local new_ts = {}
-  new_ts.actors = {}
-  new_ts.max_energy = 100
-  return setmetatable(new_ts, TimeSystem)
-end
+  local actors = {}
+  local max_energy = 100
 
-local function increment_actor_energy(actor)
-  actor.energy = actor.energy + actor.energy_regeneration
-end
+  local increment_actor_energy = function(actor)
+    actor.energy = actor.energy + actor.energy_regeneration
+  end
 
-function TimeSystem:do_actors_turn()
-  for key, actor in pairs(self.actors) do
-    if actor.energy >= self.max_energy then
-      assert(actor.callback)
-      actor:callback()
+  local do_actors_turn = function()
+    for key, actor in pairs(actors) do
+      if actor.energy >= max_energy then
+        assert(actor.callback)
+        actor:callback()
+      end
     end
   end
-end
 
-function TimeSystem:increment_actors_energy()
-  for key, actor in pairs(self.actors) do
-    increment_actor_energy(actor)
+  local increment_actors_energy = function()
+    for key, actor in pairs(actors) do
+      increment_actor_energy(actor)
+    end
   end
-end
 
-function TimeSystem:step()
-  self:increment_actors_energy()
-  self:do_actors_turn()
-end
+  self.step = function()
+    increment_actors_energy()
+    do_actors_turn()
+  end
 
-function TimeSystem:add_actor(actor, id)
-  assert(self.actors[id] == nil)
-  self.actors[id] = actor;
-  actor.energy = self.max_energy
-end
+  self.add_actor = function(actor, id)
+    assert(actors[id] == nil)
+    actors[id] = actor
+    actor.energy = max_energy
+  end
 
-function TimeSystem:remove_actor(actor_id)
-  local key = Misc.id_to_key(self.actors, actor_id)
-  self.actors[key] = nil
-end
+  self.remove_actor = function(actor_id)
+    local key = Misc.id_to_key(actors, actor_id)
+    actors[key] = nil
+  end
 
-return TimeSystem
+  return self
+end

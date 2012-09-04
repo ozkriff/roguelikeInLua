@@ -38,7 +38,7 @@ function main()
   log.set_pos({y = 300, x = 10}) -- in pixels
   log.set_screen(screen) -- TODO: log viewer?
 
-  local time_system = TimeSystem.new()
+  local time_system = TimeSystem()
   local game = Game.new(screen, map,
       pathfinder, log, time_system)
   -- TODO use setters for screen, map, etc variable
