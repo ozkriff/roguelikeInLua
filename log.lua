@@ -2,7 +2,7 @@
 
 local Misc = require 'misc'
 
-local function new()
+return function()
   local self = {}
   local strings = {}
   local max_size = 10
@@ -34,5 +34,3 @@ local function new()
   end
   return self
 end
-
-return { new = new }

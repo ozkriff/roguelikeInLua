@@ -34,7 +34,7 @@ function main()
 
   local pathfinder = Pathfinder.new(map)
 
-  local log = Log.new(screen)
+  local log = Log()
   log.set_pos({y = 300, x = 10}) -- in pixels
   log.set_screen(screen) -- TODO: log viewer?
 
