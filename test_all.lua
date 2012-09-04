@@ -288,10 +288,20 @@ local function test_priority_queue()
   Assert.is_true(queue:is_empty())
 end
 
+local function test_clamp()
+  Assert.is_equal(Misc.clamp(0, 0, 0), 0)
+  Assert.is_equal(Misc.clamp(1, 0, 0), 0)
+  Assert.is_equal(Misc.clamp(1, 0, 1), 1)
+  Assert.is_equal(Misc.clamp(-1, 0, 1), 0)
+  Assert.is_equal(Misc.clamp(100, 0, 9), 9)
+  Assert.is_equal(Misc.clamp(100, 200, 300), 200)
+end
+
 function TestAll.test_all()
   test_round()
   test_unittype_to_char()
   test_distance()
+  test_clamp()
   test_misc_id_to_key()
   test_misc_neib()
   test_m2dir()

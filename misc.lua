@@ -19,6 +19,21 @@ function Misc.distance(from, to)
   return Misc.round(n)
 end
 
+function Misc.clamp(value, min, max)
+  assert(value)
+  assert(min)
+  assert(max)
+  if min > max then
+    return nil
+  end
+  if value < min then
+    value = min
+  elseif value > max then
+    value = max
+  end
+  return value
+end
+
 function Misc.int_to_char(n)
   return string.char(n)
 end
