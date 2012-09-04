@@ -88,7 +88,7 @@ end
 function Game:draw()
   self.screen:clear()
   self.map:draw()
-  self.log:draw()
+  self.log.draw()
   self:draw_units()
   -- screen:move(map.size.y + 2, 0)
   -- self.screen:move(1, 1)
@@ -197,7 +197,7 @@ function Game:init()
   self:create_units()
   self:update_fov()
   self.screen:init(480, 640, 32)
-  -- self.log:add('initialized')
+  -- self.log.add('initialized')
 end
 
 function Game:close()

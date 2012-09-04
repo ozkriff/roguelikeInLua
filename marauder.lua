@@ -34,10 +34,9 @@ function main()
 
   local pathfinder = Pathfinder.new(map)
 
-  local log = Log.new()
-  log.pos = {y = 300, x = 10} -- in pixels
-  log.max_size = 10
-  log.screen = screen -- TODO: log viewer?
+  local log = Log.new(screen)
+  log.set_pos({y = 300, x = 10}) -- in pixels
+  log.set_screen(screen) -- TODO: log viewer?
 
   local time_system = TimeSystem.new()
   local game = Game.new(screen, map,

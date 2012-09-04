@@ -1,27 +1,38 @@
 -- See LICENSE file for copyright and license details
 
-local Log = {}
-Log.__index = Log
+local Misc = require 'misc'
 
-function Log.new()
-  local new_log = {
-    strings = {}
-  }
-  return setmetatable(new_log, Log)
-end
-
-function Log:draw()
-  local i = 1
-  while self.strings[i] and i <= self.max_size do
-    self.screen:px_print(
-        self.pos.y + i * 10, self.pos.x,
-        self.strings[i])
-    i = i + 1
+local function new()
+  local self = {}
+  local strings = {}
+  local max_size = 10
+  local pos = {y = 1, x = 1}
+  local screen
+  self.draw = function()
+    local i = 1
+    while strings[i] and i <= max_size do
+      screen:px_print(
+          pos.y + i * 10, pos.x,
+          strings[i])
+      i = i + 1
+    end
   end
+  self.add = function(string)
+    table.insert(strings, 1, string)
+  end
+  self.set_screen = function(new_screen)
+    screen = new_screen
+  end
+  self.set_max_size = function(new_max_size)
+    max_size = new_max_size
+  end
+  self.set_pos = function(new_pos)
+    pos = Misc.deepcopy(new_pos)
+  end
+  self.pos = function()
+    return pos
+  end
+  return self
 end
 
-function Log:add(string)
-  table.insert(self.strings, 1, string)
-end
-
-return Log
+return { new = new }

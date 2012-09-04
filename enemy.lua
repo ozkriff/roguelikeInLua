@@ -41,7 +41,7 @@ function Enemy:do_turn()
   local g = self.game
   -- print 'Enemy:do_enemy_turn()'
   if Misc.distance(g.player.pos, self.pos) == 1 then
-    g.log:add('Enemy attacking you!')
+    g.log.add('Enemy attacking you!')
     self.energy = self.energy - g.action_cost.fire
     return
   end
