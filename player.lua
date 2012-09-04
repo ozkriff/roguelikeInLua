@@ -14,7 +14,7 @@ function Player:explosion()
     local d = Misc.distance(self.pos, enemy.pos)
     if enemy ~= self and d <= 4 then
       g.log.add('killed ' .. key)
-      g.time_system:remove_actor(enemy.id)
+      g.time_system.remove_actor(enemy.id)
       table.remove(g.units, key)
     end
   end
@@ -84,7 +84,7 @@ function Player:fire()
 
   -- TODO: extruct to Game:kill_unit(id)
   g.log.add('killed ' .. enemy.id)
-  g.time_system:remove_actor(enemy.id)
+  g.time_system.remove_actor(enemy.id)
   local key = Misc.id_to_key(g.units, enemy.id)
   table.remove(g.units, key)
 end
