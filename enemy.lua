@@ -57,7 +57,7 @@ function Enemy:do_turn()
     else
       self.energy = self.energy - g.action_cost.wait
     end
-    g.map:clamp_pos(self.pos)
+    g.map.clamp_pos(self.pos)
   else
     self.energy = self.energy - g.action_cost.wait
   end

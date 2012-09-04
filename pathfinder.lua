@@ -16,8 +16,8 @@ end
 
 function Pathfinder:reset_tiles_cost()
   assert(self.map)
-  for y = 1, self.map.size.y do
-    for x = 1, self.map.size.x do
+  for y = 1, self.map.size().y do
+    for x = 1, self.map.size().x do
       self.map[y][x].current_cost = math.huge
     end
   end
@@ -25,7 +25,7 @@ end
 
 function Pathfinder:inboard(pos)
   assert(pos)
-  local size = self.map.size
+  local size = self.map.size()
   if pos.y < 1 then
     return false
   end
@@ -120,8 +120,8 @@ end
 
 function Pathfinder:print_map_debug_info()
   print('Map: current_cost:')
-  for y = 1, self.map.size.y do
-    for x = 1, self.map.size.x do
+  for y = 1, self.map.size().y do
+    for x = 1, self.map.size().x do
       local s = tostring(self.map[y][x].current_cost)
       while #s < 2 do s = ' ' .. s end
       io.write(s, ' ')
@@ -130,8 +130,8 @@ function Pathfinder:print_map_debug_info()
   end
   print('')
   -- print('Map: cost:')
-  -- for y = 1, self.map.size.y do
-  --   for x = 1, self.map.size.x do
+  -- for y = 1, self.map.size().y do
+  --   for x = 1, self.map.size().x do
   --     local s = tostring(self.map[y][x].cost)
   --     while #s < 2 do s = ' ' .. s end
   --     io.write(s, ' ')
@@ -140,8 +140,8 @@ function Pathfinder:print_map_debug_info()
   -- end
   print('')
   print('Map: parent:')
-  for y = 1, self.map.size.y do
-    for x = 1, self.map.size.x do
+  for y = 1, self.map.size().y do
+    for x = 1, self.map.size().x do
       local s = tostring(self.map[y][x].parent)
       while #s < 2 do s = ' ' .. s end
       io.write(s, ' ')

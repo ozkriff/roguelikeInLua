@@ -58,7 +58,7 @@ function Player:fire()
       local new_pos = {}
       pos.x = pos.x + direction_to_diff_map[directions[char]].x
       pos.y = pos.y + direction_to_diff_map[directions[char]].y
-      g.map:clamp_pos(pos)
+      g.map.clamp_pos(pos)
       -- g.screen:move(
       --     g.map.pos.y + pos.y,
       --     g.map.pos.x + pos.x)
@@ -96,7 +96,7 @@ function Player:move(direction)
       + direction_to_diff_map[direction].x
   new_pos.y = self.pos.y
       + direction_to_diff_map[direction].y
-  g.map:clamp_pos(new_pos)
+  g.map.clamp_pos(new_pos)
   if g:is_position_free(new_pos) then
     g.map[self.pos.y][self.pos.x].unit = nil
     self.pos = new_pos

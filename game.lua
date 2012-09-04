@@ -67,8 +67,8 @@ end
 
 -- TODO test
 function Game:update_fov()
-  for y = 1, self.map.size.y do
-    for x = 1, self.map.size.x do
+  for y = 1, self.map.size().y do
+    for x = 1, self.map.size().x do
       self.map[y][x].is_seen = Bresenham.los(
           self.player.pos.x, self.player.pos.y, x, y,
           -- TODO x2? y2? ?! Rename args.
@@ -87,10 +87,10 @@ end
 
 function Game:draw()
   self.screen:clear()
-  self.map:draw()
+  self.map.draw()
   self.log.draw()
   self:draw_units()
-  -- screen:move(map.size.y + 2, 0)
+  -- screen:move(map.size().y + 2, 0)
   -- self.screen:move(1, 1)
   self.screen:line(400, 100, 420, 140)
   self.screen:line(420, 140, 420, 200)
@@ -103,7 +103,7 @@ function Game:draw()
 end
 
 function Game:is_position_free(pos)
-  if not self.map:is_tile_free(pos) then
+  if not self.map.is_tile_free(pos) then
     return false
   end
   for key, unit in pairs(self.units) do
@@ -147,9 +147,9 @@ function Game:create_units()
   -- local units_count = 10 -- TODO
   local units_count = 3
   for i = 1, units_count do
-    self:add_unit_ai(self.map:get_random_pos())
+    self:add_unit_ai(self.map.get_random_pos())
   end
-  self:add_unit_player(self.map:get_random_pos())
+  self:add_unit_player(self.map.get_random_pos())
 end
 
 function Game:unit_at(pos)
@@ -166,20 +166,20 @@ end
 
 -- TODO joint and test this
 function Game:add_random_vertical_wall()
-  local pos = self.map:get_random_pos()
+  local pos = self.map.get_random_pos()
   local length = math.random(1, 10)
   for i = 0, length do
-    if pos.y + i <= self.map.size.y then
+    if pos.y + i <= self.map.size().y then
       self.map[pos.y + i][pos.x].type = 'block'
     end
   end
 end
 
 function Game:add_random_horizontal_wall()
-  local pos = self.map:get_random_pos()
+  local pos = self.map.get_random_pos()
   local length = math.random(1, 10)
   for i = 0, length do
-    if pos.x + i <= self.map.size.x then
+    if pos.x + i <= self.map.size().x then
       self.map[pos.y][pos.x + i].type = 'block'
     end
   end

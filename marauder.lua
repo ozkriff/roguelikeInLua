@@ -27,10 +27,10 @@ function main()
   math.randomseed(os.time())
   local screen = Screen.new()
 
-  local map = Map.new()
-  map:set_size({y = 15, x = 15}) -- in tiles
-  -- map.pos = {y = 1, x = 1} -- TODO: in pixels
-  map.screen = screen -- TODO: map_viewer
+  local map = Map()
+  map.set_size({y = 15, x = 15}) -- in tiles
+  -- map.set_pos({y = 1, x = 1}) -- TODO: in pixels
+  map.set_screen(screen) -- TODO: map_viewer
 
   local pathfinder = Pathfinder.new(map)
 

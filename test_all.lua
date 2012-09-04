@@ -83,8 +83,8 @@ end
 
 local function test_map()
   -- TODO
-  local map = Map.new()
-  map:set_size({y = 10, x = 10})
+  local map = Map()
+  map.set_size({y = 10, x = 10})
   map.pos = {y = 1, x = 1}
 end
 
