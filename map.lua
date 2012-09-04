@@ -5,6 +5,7 @@ local Misc = require 'misc'
 
 return function()
   local self = {}
+
   local size = {y = 0, x = 0}
   local screen
 
