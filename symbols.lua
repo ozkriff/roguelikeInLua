@@ -13,5 +13,5 @@ return {
   Z = 10,
   AT = 11, -- '@'
   POINT = 12, -- '.'
-  GRID = 13, -- TODO: '#'
+  HASH = 13, -- '#'
 }

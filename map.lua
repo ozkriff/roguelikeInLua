@@ -31,7 +31,7 @@ end
 function Map:draw()
   local type_to_char_map = {
     ['empty'] = Symbols.POINT,
-    ['block'] = Symbols.GRID
+    ['block'] = Symbols.HASH
   }
   -- self.screen:move(self.pos.y, self.pos.x)
   for y = 1, self.size.y do

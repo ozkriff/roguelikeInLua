@@ -49,7 +49,7 @@ typedef enum {
   CHAR_Z = 10,
   CHAR_AT = 11, /* '@' */
   CHAR_POINT = 12, /* '.' */
-  CHAR_GRID = 13 /* TODO: '#' */
+  CHAR_HASH = 13 /* TODO: '#' */
 } CharacterCode;
 
 typedef struct {
@@ -195,8 +195,8 @@ static void init_characters(Screen *screen) {
       = loadimg(DATA("img/chars/q.png"));
   screen->characters[CHAR_Z]
       = loadimg(DATA("img/chars/z.png"));
-  screen->characters[CHAR_GRID]
-      = loadimg(DATA("img/chars/grid.png"));
+  screen->characters[CHAR_HASH]
+      = loadimg(DATA("img/chars/hash.png"));
   screen->characters[CHAR_POINT]
       = loadimg(DATA("img/chars/point.png"));
 }
