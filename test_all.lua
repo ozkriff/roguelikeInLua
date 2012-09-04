@@ -12,9 +12,6 @@ local Assert = require 'assert'
 local Tr = require 'tr'
 local PriorityQueue = require 'priority_queue'
 
-local TestAll = {}
-TestAll.__index = TestAll
-
 local function test_unittype_to_char()
   Assert.is_equal(Game.unit_type_to_char('player'), Symbols.AT)
   Assert.is_equal(Game.unit_type_to_char('enemy'), Symbols.Z)
@@ -297,7 +294,7 @@ local function test_clamp()
   Assert.is_equal(Misc.clamp(100, 200, 300), 200)
 end
 
-function TestAll.test_all()
+local function test_all()
   test_round()
   test_unittype_to_char()
   test_distance()
@@ -321,4 +318,4 @@ function TestAll.test_all()
   print('All tests are Ok')
 end
 
-TestAll.test_all()
+test_all()
