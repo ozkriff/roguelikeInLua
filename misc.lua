@@ -32,10 +32,10 @@ local function table_print(tt, indent, done)
       table.insert(sb, string.rep(' ', indent)) -- indent it
       if type (value) == 'table' and not done [value] then
         done [value] = true
-        table.insert(sb, '{\n');
+        table.insert(sb, '{\n')
         table.insert(sb, table_print(value, indent + 2, done))
         table.insert(sb, string.rep(' ', indent)) -- indent it
-        table.insert(sb, '}\n');
+        table.insert(sb, '}\n')
       elseif 'number' == type(key) then
         table.insert(sb, string.format('\'%s\'\n', tostring(value)))
       else

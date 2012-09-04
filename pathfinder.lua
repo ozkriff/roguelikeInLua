@@ -72,7 +72,7 @@ function Pathfinder:process_neibor(pos, neib_pos)
   if dy ~= 0 then newcost = newcost + 1 end
 
   -- TODO what action points?! remove them
-  -- local action_points = get_unit_type(u->type_id)->action_points;
+  -- local action_points = get_unit_type(u->type_id)->action_points
   -- if t2.current_cost > newcost and newcost <= action_points then
   -- print('process_neibor(): current_cost = '
   --     .. t2.current_cost .. ', newcost = ' .. newcost)
