@@ -1,12 +1,6 @@
 -- See LICENSE file for copyright and license details
+
 -- A simple priority queue implementation
---   for i=1,10 do q:push(i, math.random()) end
---   while not q:is_empty() do print(q:pop()) end
--- Note that keys can be arbitrary:
---   for i=1,10 do
---     q:push(math.random() > 0.5 and newproxy() or {}, math.random())
---   end
---   while not q:is_empty() do print(q:pop()) end
 
 return function()
   local self = {}
