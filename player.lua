@@ -153,7 +153,7 @@ return function(game)
   self.callback = function()
     game.draw()
     do_command(game.get_next_command())
-    game.draw()
+    -- game.draw()
   end
 
   return self
