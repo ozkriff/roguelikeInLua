@@ -1,3 +1,5 @@
+-- See LICENSE file for copyright and license details
+
 local Bresenham = {}
 
 function Bresenham.los(x0, y0, x1, y1, callback)
