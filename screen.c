@@ -8,26 +8,6 @@
 #include "lualib.h"
 #include "lauxlib.h"
 
-/* TODO:
- * map_add_arrow(pos{y, x}, index)
- * map_remove_arrow(pos{y, x}, index)
- * map_set_char(pos{y, x}, code)
- * map_set_offset() -> save to screen's C-struct
- * map_set_size(size{y, x})
- * map_draw()
- * log_set_pos(pos{y, x}) --> ???
- * log_add_string(string) --> strcpy()
- * log_draw() --> ???
- * set_color(r, g, b, a)
- *   --> save to local variable 
- *       (in screen's C-structure)
- * draw_line(from{y, x}, to{y, x})
- *   --> bresenham_line(x0, y0, x1, y1)
- * draw_rectangle(from{y, x}, to{y, x}) --> SDL_FillRect()
- * screen_refresh() --> SDL_Flip(screen);
- * screen_clear()
- */
-
 #define SCREEN "Screen"
 
 /* start from 1 -> translate numbers when called from Lua. */
@@ -145,7 +125,6 @@ static void draw_image(Screen *screen, int x, int y,
   SDL_BlitSurface(surface, NULL, screen->screen, &dest);
 }
 
-/* TODO: Pass structure */
 static void init_colors(Screen *screen) {
   SDL_PixelFormat *f = screen->screen->format; /* shortcut */
   screen->colors.red = SDL_MapRGBA(f, 255, 0, 0, 255);
