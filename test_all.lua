@@ -1,15 +1,15 @@
 -- See LICENSE file for copyright and license details
 
+local Tr = require 'tr'
 local Log = require 'log'
 local Map = require 'map'
-local TimeSystem = require 'time_system'
 local Game = require 'game'
 local Misc = require 'misc'
+local Assert = require 'assert'
+local Symbols = require 'symbols'
 local Bresenham = require 'bresenham'
 local Pathfinder = require 'pathfinder'
-local Symbols = require 'symbols'
-local Assert = require 'assert'
-local Tr = require 'tr'
+local TimeSystem = require 'time_system'
 local PriorityQueue = require 'priority_queue'
 
 local function test_unittype_to_char()

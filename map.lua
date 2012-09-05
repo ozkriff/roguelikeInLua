@@ -1,7 +1,7 @@
 -- See LICENSE file for copyright and license details
 
-local Symbols = require 'symbols'
 local Misc = require 'misc'
+local Symbols = require 'symbols'
 
 return function()
   local self = {}

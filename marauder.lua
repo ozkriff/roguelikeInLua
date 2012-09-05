@@ -16,12 +16,12 @@
 -- -- load .png with expected image
 -- -- compare pixels of this surfaces
 
-local TimeSystem = require 'time_system'
-local Screen = require 'screen'
 local Log = require 'log'
 local Map = require 'map'
-local Pathfinder = require 'pathfinder'
 local Game = require 'game'
+local Screen = require 'screen'
+local Pathfinder = require 'pathfinder'
+local TimeSystem = require 'time_system'
 
 function main()
   math.randomseed(os.time())
