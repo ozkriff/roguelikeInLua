@@ -1,3 +1,4 @@
+#!env lua
 -- See LICENSE file for copyright and license details
 
 -- TODO: Study 'Broken Bottle' and 'Shadow' sources. Looks awesome.
