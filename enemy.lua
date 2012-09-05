@@ -38,16 +38,16 @@ return function(game)
   local get_new_pos_simple = function()
     local p = {y = pos.y, x = pos.x}
     -- TODO replace with dijkstra or a-star
-    if game.player.pos().x < p.x then
+    if game.player().pos().x < p.x then
       p.x = p.x - 1
     end
-    if game.player.pos().x > p.x then
+    if game.player().pos().x > p.x then
       p.x = p.x + 1
     end
-    if game.player.pos().y < p.y then
+    if game.player().pos().y < p.y then
       p.y = p.y - 1
     end
-    if game.player.pos().y > p.y then
+    if game.player().pos().y > p.y then
       p.y = p.y + 1
     end
     return p
@@ -55,33 +55,33 @@ return function(game)
 
   local get_new_pos_djikstra = function()
     local pf = game.pathfinder
-    local path = pf.get_path(pos, game.player.pos())
+    local path = pf.get_path(pos, game.player().pos())
     assert(#path >= 2)
     return path[2]
   end
 
   self.callback = function()
     -- print 'Enemy:do_enemy_turn()'
-    if Misc.distance(game.player.pos(), pos) == 1 then
-      game.log.add('Enemy attacking you!')
-      energy = energy - game.action_cost.fire
+    if Misc.distance(game.player().pos(), pos) == 1 then
+      game.log().add('Enemy attacking you!')
+      energy = energy - game.action_cost().fire
       return
     end
-    local dist = Misc.distance(game.player.pos(), pos)
-    if dist < game.max_see_distance then
+    local dist = Misc.distance(game.player().pos(), pos)
+    if dist < game.max_see_distance() then
       -- local new_pos = get_new_pos_djikstra()
       local new_pos = get_new_pos_simple()
-      if game:is_position_free(new_pos) then
-        game.map[pos.y][pos.x].unit = nil
+      if game.is_position_free(new_pos) then
+        game.map()[pos.y][pos.x].unit = nil
         pos = new_pos
-        game.map[pos.y][pos.x].unit = true
-        energy = energy - game.action_cost.move
+        game.map()[pos.y][pos.x].unit = true
+        energy = energy - game.action_cost().move
       else
-        energy = energy - game.action_cost.wait
+        energy = energy - game.action_cost().wait
       end
-      game.map.clamp_pos(pos)
+      game.map().clamp_pos(pos)
     else
-      energy = energy - game.action_cost.wait
+      energy = energy - game.action_cost().wait
     end
   end
 

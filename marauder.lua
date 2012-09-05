@@ -39,13 +39,15 @@ function main()
   log.set_screen(screen) -- TODO: log viewer?
 
   local time_system = TimeSystem()
-  local game = Game.new(screen, map,
-      pathfinder, log, time_system)
-  -- TODO use setters for screen, map, etc variable
-  -- TODO assert() that thay all set in init() method
-  game:init()
-  game:mainloop()
-  game:close()
+  local game = Game()
+  game.set_screen(screen)
+  game.set_map(map)
+  game.set_pathfinder(pathfinder)
+  game.set_log(log)
+  game.set_time_system(time_system)
+  game.init()
+  game.mainloop()
+  game.close()
 end
 
 main()

@@ -38,13 +38,13 @@ return function(game)
   local explosion = function()
     -- TODO player need rifle to shoot!
     -- TODO extruct to kill_unit function
-    game.log.add('firing')
-    energy = energy - game.action_cost.fire
+    game.log().add('firing')
+    energy = energy - game.action_cost().fire
     for key, enemy in pairs(game.units) do
       local d = Misc.distance(pos, enemy.pos)
       if enemy ~= self and d <= 4 then
-        game.log.add('killed ' .. key)
-        game.time_system.remove_actor(enemy.id)
+        game.log().add('killed ' .. key)
+        game.time_system().remove_actor(enemy.id)
         table.remove(game.units, key)
       end
     end
@@ -88,35 +88,35 @@ return function(game)
             + direction_to_diff_map[directions[char]].x
         cursor_pos.y = cursor_pos.y
             + direction_to_diff_map[directions[char]].y
-        game.map.clamp_pos(cursor_pos)
+        game.map().clamp_pos(cursor_pos)
         -- game.screen:move(
         --     game.map.pos.y + pos.y,
         --     game.map.pos.x + pos.x)
         -- game.screen:move(cursor_pos.y, cursor_pos.x)
         -- game.screen:refresh()
       end
-      char = game:get_next_command()
+      char = game.get_next_command()
     end
 
     -- TODO bresenham
 
-    local enemy = game:unit_at(cursor_pos)
+    local enemy = game.unit_at(cursor_pos)
 
     if not enemy then
-      game.log.add('No one here!')
+      game.log().add('No one here!')
       return
     end
 
-    game.log.add('firing')
-    energy = energy - game.action_cost.fire
+    game.log().add('firing')
+    energy = energy - game.action_cost().fire
 
     local d = Misc.distance(pos, enemy.pos())
 
     -- TODO: extruct to Game:kill_unit(id)
-    game.log.add('killed ' .. enemy.id)
-    game.time_system.remove_actor(enemy.id)
-    local key = Misc.id_to_key(game.units, enemy.id)
-    table.remove(game.units, key)
+    game.log().add('killed ' .. enemy.id)
+    game.time_system().remove_actor(enemy.id)
+    local key = Misc.id_to_key(game.units(), enemy.id)
+    table.remove(game.units(), key)
   end
 
   local move = function(direction)
@@ -124,37 +124,37 @@ return function(game)
       y = pos.y + direction_to_diff_map[direction].y,
       x = pos.x + direction_to_diff_map[direction].x
     }
-    game.map.clamp_pos(new_pos)
-    if game:is_position_free(new_pos) then
-      game.map[pos.y][pos.x].unit = nil
+    game.map().clamp_pos(new_pos)
+    if game.is_position_free(new_pos) then
+      game.map()[pos.y][pos.x].unit = nil
       pos = new_pos
-      game.map[pos.y][pos.x].unit = true
-      game:update_fov()
-      game.log.add('moved ' .. direction)
-      energy = energy - game.action_cost.move
+      game.map()[pos.y][pos.x].unit = true
+      game.update_fov()
+      game.log().add('moved ' .. direction)
+      energy = energy - game.action_cost().move
     else
-      game.log.add('waiting')
-      energy = energy - game.action_cost.wait
+      game.log().add('waiting')
+      energy = energy - game.action_cost().wait
     end
   end
 
   local do_command = function(char)
     if char == 'q' then
-      game.is_running = false
+      game.set_is_running(false)
     elseif directions[char] then
       move(directions[char])
     elseif char == '.' then
-      game.log.add('waiting')
-      energy = energy - game.action_cost.wait
+      game.log().add('waiting')
+      energy = energy - game.action_cost().wait
     elseif char == 'f' then
       fire()
     end
   end
 
   self.callback = function()
-    game:draw()
-    do_command(game:get_next_command())
-    game:draw()
+    game.draw()
+    do_command(game.get_next_command())
+    game.draw()
   end
 
   return self

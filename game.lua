@@ -6,208 +6,264 @@ local Player = require 'player'
 local Symbols = require 'symbols'
 local Bresenham = require 'bresenham'
 
-local Game = {}
-Game.__index = Game
+return function()
+  local self = {}
 
-function Game.new(screen, map, pathfinder, log, time_system)
-  assert(map)
-  assert(pathfinder)
-  assert(log)
-  assert(time_system)
-  assert(screen)
-  local new_game = {
-    screen = screen,
-    map = map,
-    pathfinder = pathfinder,
-    log = log,
-    time_system = time_system,
-    is_running = true,
-    max_see_distance = 10,
-    units = {},
-    player = 0,
-    action_cost = {
-      fire = 80,
-      move = 40,
-      wait = 20
+  local max_see_distance = 10
+  local units = {}
+  local is_running = true
+  local player = 0
+  local action_cost = {
+    fire = 80,
+    move = 40,
+    wait = 20
+  }
+  local screen
+  local map
+  local pathfinder
+  local log
+  local time_system
+
+  self.max_see_distance = function()
+    return max_see_distance
+  end
+
+  self.set_is_running = function(new_is_running)
+    is_running = new_is_running
+  end
+
+  self.units = function()
+    return units
+  end
+
+  self.player = function()
+    return player
+  end
+
+  self.action_cost = function()
+    return action_cost
+  end
+
+  self.set_screen = function(new_screen)
+    screen = new_screen
+  end
+
+  self.screen = function()
+    return screen
+  end
+
+  self.set_map = function(new_map)
+    map = new_map
+  end
+
+  self.map = function()
+    return map
+  end
+
+  self.set_pathfinder = function(new_pathfinder)
+    pathfinder = new_pathfinder
+  end
+
+  self.pathfinder = function()
+    return pathfinder
+  end
+
+  self.set_log = function(new_log)
+    log = new_log
+  end
+
+  self.log = function()
+    return log
+  end
+
+  self.set_time_system = function(new_time_system)
+    time_system = new_time_system
+  end
+
+  self.time_system = function()
+    return time_system
+  end
+
+  self.unit_type_to_char = function(type)
+    local table = {
+      ['player'] = Symbols.AT,
+      ['enemy'] = Symbols.Z,
     }
-  }
-  return setmetatable(new_game, Game)
-end
+    return table[type]
+  end
 
-function Game.unit_type_to_char(type)
-  local table = {
-    ['player'] = Symbols.AT,
-    ['enemy'] = Symbols.Z,
-  }
-  return table[type]
-end
-
-function Game:draw_units()
-  for key, unit in pairs(self.units) do
-    -- TODO
-    -- self.screen:move(
-    --     self.map.pos.y + unit.pos.y,
-    --     self.map.pos.x + unit.pos.x)
-    self.screen:move(unit.pos().y, unit.pos().x)
-    if Bresenham.los(
-        self.player.pos().x, self.player.pos().y,
-        unit.pos().x, unit.pos().y,
-        function(x, y)
-          return self.map[y][x].type == 'empty'
-        end)
-    then
-      self.screen:printf(self.unit_type_to_char(unit.type()))
-      self.screen:move(unit.pos().y, unit.pos().x)
-      self.screen:printf(Symbols.ARROW_UP)
-    else
-      self.screen:printf(Symbols.Q)
+  local draw_units = function()
+    for key, unit in pairs(units) do
+      -- TODO
+      -- self.screen:move(
+      --     self.map.pos.y + unit.pos.y,
+      --     self.map.pos.x + unit.pos.x)
+      screen:move(unit.pos().y, unit.pos().x)
+      if Bresenham.los(
+          player.pos().x, player.pos().y,
+          unit.pos().x, unit.pos().y,
+          function(x, y)
+            return map[y][x].type == 'empty'
+          end)
+      then
+        screen:printf(self.unit_type_to_char(unit.type()))
+        screen:move(unit.pos().y, unit.pos().x)
+        screen:printf(Symbols.ARROW_UP)
+      else
+        screen:printf(Symbols.Q)
+      end
     end
   end
-end
 
--- TODO test
-function Game:update_fov()
-  for y = 1, self.map.size().y do
-    for x = 1, self.map.size().x do
-      self.map[y][x].is_seen = Bresenham.los(
-          self.player.pos().x, self.player.pos().y, x, y,
-          -- TODO x2? y2? ?! Rename args.
-          function(x2, y2)
-            -- last tile in line must be visible
-            if x2 == x and y2 == y then
-              return true
-            else
-              return self.map[y2][x2].type == 'empty'
+  -- TODO test
+  self.update_fov = function()
+    for y = 1, map.size().y do
+      for x = 1, map.size().x do
+        map[y][x].is_seen = Bresenham.los(
+            player.pos().x, player.pos().y, x, y,
+            -- TODO x2? y2? ?! Rename args.
+            function(x2, y2)
+              -- last tile in line must be visible
+              if x2 == x and y2 == y then
+                return true
+              else
+                return map[y2][x2].type == 'empty'
+              end
             end
-          end
-      )
+        )
+      end
     end
   end
-end
 
-function Game:draw()
-  self.screen:clear()
-  self.map.draw()
-  self.log.draw()
-  self:draw_units()
-  -- screen:move(map.size().y + 2, 0)
-  -- self.screen:move(1, 1)
-  self.screen:line(400, 100, 420, 140)
-  self.screen:line(420, 140, 420, 200)
-  -- self.screen:px_print(100, 100, 'test\ntest')
-  -- self.screen:px_print(400, 50,
-  --     'self.screen:line(100, 100, 200, 100)\n\z
-  --      self.screen:px_print(200, 50, \n')
-  -- self.screen:printf(Symbols.Q)
-  self.screen:refresh()
-end
-
-function Game:is_position_free(pos)
-  if not self.map.is_tile_free(pos) then
-    return false
+  self.draw = function()
+    screen:clear()
+    map.draw()
+    log.draw()
+    draw_units()
+    -- screen:move(map.size().y + 2, 0)
+    -- screen:move(1, 1)
+    screen:line(400, 100, 420, 140)
+    screen:line(420, 140, 420, 200)
+    -- screen:px_print(100, 100, 'test\ntest')
+    -- screen:px_print(400, 50,
+    --     'screen:line(100, 100, 200, 100)\n\z
+    --      screen:px_print(200, 50, \n')
+    -- screen:printf(Symbols.Q)
+    screen:refresh()
   end
-  for key, unit in pairs(self.units) do
-    if unit.pos().x == pos.x
-        and unit.pos().y == pos.y
-    then
+
+  self.is_position_free = function(pos)
+    if not map.is_tile_free(pos) then
       return false
     end
+    for key, unit in pairs(units) do
+      if unit.pos().x == pos.x
+          and unit.pos().y == pos.y
+      then
+        return false
+      end
+    end
+    return true
   end
-  return true
-end
 
-function Game:get_next_command()
-  -- print 'Game:get_next_command()'
-  return Misc.int_to_char(self.screen:get_char())
-end
-
-function Game:add_unit(unit)
-  table.insert(self.units, unit)
-  -- unit.id = #self.units + 1
-  unit.id = #self.units
-  unit.game = self -- TODO
-  self.time_system.add_actor(unit, unit.id)
-  self.map[unit.pos().y][unit.pos().x].unit = true
-end
-
-function Game:add_unit_ai(pos)
-  unit = Enemy(self)
-  unit.set_pos(pos)
-  self:add_unit(unit)
-end
-
-function Game:add_unit_player(pos)
-  unit = Player(self)
-  unit.set_pos(pos)
-  self:add_unit(unit)
-  self.player = unit
-end
-
-function Game:create_units()
-  -- local units_count = 10 -- TODO
-  local units_count = 3
-  for i = 1, units_count do
-    self:add_unit_ai(self.map.get_random_pos())
+  self.get_next_command = function()
+    -- print 'Game:get_next_command()'
+    return Misc.int_to_char(screen:get_char())
   end
-  self:add_unit_player(self.map.get_random_pos())
-end
 
-function Game:unit_at(pos)
-  for key, unit in pairs(self.units) do
-    -- TODO Vector2:is_equal()
-    if unit.pos().y == pos.y
-        and unit.pos().x == pos.x
-    then
-      return unit
+  local add_unit = function(unit)
+    table.insert(units, unit)
+    -- unit.id = #self.units + 1
+    unit.id = #units
+    unit.game = self -- TODO
+    time_system.add_actor(unit, unit.id)
+    map[unit.pos().y][unit.pos().x].unit = true
+  end
+
+  local add_unit_ai = function(pos)
+    unit = Enemy(self)
+    unit.set_pos(pos)
+    add_unit(unit)
+  end
+
+  local add_unit_player = function(pos)
+    unit = Player(self)
+    unit.set_pos(pos)
+    add_unit(unit)
+    player = unit
+  end
+
+  local create_units = function()
+    -- local units_count = 10 -- TODO
+    local units_count = 3
+    for i = 1, units_count do
+      add_unit_ai(map.get_random_pos())
+    end
+    add_unit_player(map.get_random_pos())
+  end
+
+  self.unit_at = function(pos)
+    for key, unit in pairs(units) do
+      -- TODO Vector2:is_equal()
+      if unit.pos().y == pos.y
+          and unit.pos().x == pos.x
+      then
+        return unit
+      end
+    end
+    return nil
+  end
+
+  -- TODO joint and test this
+  local add_random_vertical_wall = function()
+    local pos = map.get_random_pos()
+    local length = math.random(1, 10)
+    for i = 0, length do
+      if pos.y + i <= map.size().y then
+        map[pos.y + i][pos.x].type = 'block'
+      end
     end
   end
-  return nil
-end
 
--- TODO joint and test this
-function Game:add_random_vertical_wall()
-  local pos = self.map.get_random_pos()
-  local length = math.random(1, 10)
-  for i = 0, length do
-    if pos.y + i <= self.map.size().y then
-      self.map[pos.y + i][pos.x].type = 'block'
+  local add_random_horizontal_wall = function()
+    local pos = map.get_random_pos()
+    local length = math.random(1, 10)
+    for i = 0, length do
+      if pos.x + i <= map.size().x then
+        map[pos.y][pos.x + i].type = 'block'
+      end
     end
   end
-end
 
-function Game:add_random_horizontal_wall()
-  local pos = self.map.get_random_pos()
-  local length = math.random(1, 10)
-  for i = 0, length do
-    if pos.x + i <= self.map.size().x then
-      self.map[pos.y][pos.x + i].type = 'block'
+  local init_test_obstacles = function()
+    for i = 1, 4 do
+      add_random_vertical_wall()
+      add_random_horizontal_wall()
     end
   end
-end
 
-function Game:init_test_obstacles()
-  for i = 1, 4 do
-    self:add_random_vertical_wall()
-    self:add_random_horizontal_wall()
+  self.init = function()
+    assert(map)
+    assert(pathfinder)
+    assert(log)
+    assert(time_system)
+    assert(screen)
+    init_test_obstacles()
+    create_units()
+    self.update_fov()
+    screen:init(480, 640, 32)
+    -- self.log.add('initialized')
   end
-end
 
-function Game:init()
-  self:init_test_obstacles()
-  self:create_units()
-  self:update_fov()
-  self.screen:init(480, 640, 32)
-  -- self.log.add('initialized')
-end
-
-function Game:close()
-  self.screen:close()
-end
-
-function Game:mainloop()
-  while self.is_running do
-    self.time_system.step()
+  self.close = function()
+    screen:close()
   end
-end
 
-return Game
+  self.mainloop = function()
+    while is_running do
+      time_system.step()
+    end
+  end
+
+  return self
+end

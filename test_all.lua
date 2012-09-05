@@ -13,9 +13,10 @@ local Tr = require 'tr'
 local PriorityQueue = require 'priority_queue'
 
 local function test_unittype_to_char()
-  Assert.is_equal(Game.unit_type_to_char('player'), Symbols.AT)
-  Assert.is_equal(Game.unit_type_to_char('enemy'), Symbols.Z)
-  Assert.is_nil(Game.unit_type_to_char('ololo'))
+  local game = Game()
+  Assert.is_equal(game.unit_type_to_char('player'), Symbols.AT)
+  Assert.is_equal(game.unit_type_to_char('enemy'), Symbols.Z)
+  Assert.is_nil(game.unit_type_to_char('ololo'))
 end
 
 local function test_round()
