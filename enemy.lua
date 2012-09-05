@@ -2,74 +2,88 @@
 
 local Misc = require 'misc'
 
-local Enemy = {}
-Enemy.__index = Enemy
+return function(game)
+  local self = {}
 
-function Enemy:enemy_move_to_player()
-  -- TODO
-end
+  local energy_regeneration = 5
+  local type = 'enemy'
+  local game = game
+  local pos = {y = 1, x = 1}
+  local energy
 
-function Enemy:get_new_pos_simple()
-  local g = self.game
-  local pos = {y = self.pos.y, x = self.pos.x}
-  -- TODO replace with dijkstra or a-star
-  if g.player.pos.x < self.pos.x then
-    pos.x = self.pos.x - 1
+  self.type = function()
+    return type
   end
-  if g.player.pos.x > self.pos.x then
-    pos.x = self.pos.x + 1
-  end
-  if g.player.pos.y < self.pos.y then
-    pos.y = self.pos.y - 1
-  end
-  if g.player.pos.y > self.pos.y then
-    pos.y = self.pos.y + 1
-  end
-  return pos
-end
 
-function Enemy:get_new_pos_djikstra()
-  local g = self.game
-  local pf = g.pathfinder
-  local pos
-  local path = pf.get_path(self.pos, g.player.pos)
-  assert(#path >= 2)
-  return path[2]
-end
-
-function Enemy:do_turn()
-  local g = self.game
-  -- print 'Enemy:do_enemy_turn()'
-  if Misc.distance(g.player.pos, self.pos) == 1 then
-    g.log.add('Enemy attacking you!')
-    self.energy = self.energy - g.action_cost.fire
-    return
+  self.energy = function()
+    return energy
   end
-  local dist = Misc.distance(g.player.pos, self.pos)
-  if dist < g.max_see_distance then
-    local new_pos = self:get_new_pos_djikstra()
-    -- local new_pos = self:get_new_pos_simple()
-    if g:is_position_free(new_pos) then
-      g.map[self.pos.y][self.pos.x].unit = nil
-      self.pos = new_pos
-      g.map[self.pos.y][self.pos.x].unit = true
-      self.energy = self.energy - g.action_cost.move
-    else
-      self.energy = self.energy - g.action_cost.wait
+
+  self.set_energy = function(new_energy)
+    energy = new_energy
+  end
+
+  self.regenerate_energy = function()
+    energy = energy + energy_regeneration
+  end
+
+  self.pos = function()
+    return pos
+  end
+
+  self.set_pos = function(new_pos)
+    pos = new_pos
+  end
+
+  local get_new_pos_simple = function()
+    local p = {y = pos.y, x = pos.x}
+    -- TODO replace with dijkstra or a-star
+    if game.player.pos().x < p.x then
+      p.x = p.x - 1
     end
-    g.map.clamp_pos(self.pos)
-  else
-    self.energy = self.energy - g.action_cost.wait
+    if game.player.pos().x > p.x then
+      p.x = p.x + 1
+    end
+    if game.player.pos().y < p.y then
+      p.y = p.y - 1
+    end
+    if game.player.pos().y > p.y then
+      p.y = p.y + 1
+    end
+    return p
   end
-end
 
-function Enemy.new()
-  local new_enemy = {
-    type = 'enemy',
-    callback = Enemy.do_turn,
-    energy_regeneration = 5
-  }
-  return setmetatable(new_enemy, Enemy)
-end
+  local get_new_pos_djikstra = function()
+    local pf = game.pathfinder
+    local path = pf.get_path(pos, game.player.pos())
+    assert(#path >= 2)
+    return path[2]
+  end
 
-return Enemy
+  self.callback = function()
+    -- print 'Enemy:do_enemy_turn()'
+    if Misc.distance(game.player.pos(), pos) == 1 then
+      game.log.add('Enemy attacking you!')
+      energy = energy - game.action_cost.fire
+      return
+    end
+    local dist = Misc.distance(game.player.pos(), pos)
+    if dist < game.max_see_distance then
+      -- local new_pos = get_new_pos_djikstra()
+      local new_pos = get_new_pos_simple()
+      if game:is_position_free(new_pos) then
+        game.map[pos.y][pos.x].unit = nil
+        pos = new_pos
+        game.map[pos.y][pos.x].unit = true
+        energy = energy - game.action_cost.move
+      else
+        energy = energy - game.action_cost.wait
+      end
+      game.map.clamp_pos(pos)
+    else
+      energy = energy - game.action_cost.wait
+    end
+  end
+
+  return self
+end

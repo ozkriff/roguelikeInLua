@@ -48,16 +48,16 @@ function Game:draw_units()
     -- self.screen:move(
     --     self.map.pos.y + unit.pos.y,
     --     self.map.pos.x + unit.pos.x)
-    self.screen:move(unit.pos.y, unit.pos.x)
+    self.screen:move(unit.pos().y, unit.pos().x)
     if Bresenham.los(
-        self.player.pos.x, self.player.pos.y,
-        unit.pos.x, unit.pos.y,
+        self.player.pos().x, self.player.pos().y,
+        unit.pos().x, unit.pos().y,
         function(x, y)
           return self.map[y][x].type == 'empty'
         end)
     then
-      self.screen:printf(self.unit_type_to_char(unit.type))
-      self.screen:move(unit.pos.y, unit.pos.x)
+      self.screen:printf(self.unit_type_to_char(unit.type()))
+      self.screen:move(unit.pos().y, unit.pos().x)
       self.screen:printf(Symbols.ARROW_UP)
     else
       self.screen:printf(Symbols.Q)
@@ -70,7 +70,7 @@ function Game:update_fov()
   for y = 1, self.map.size().y do
     for x = 1, self.map.size().x do
       self.map[y][x].is_seen = Bresenham.los(
-          self.player.pos.x, self.player.pos.y, x, y,
+          self.player.pos().x, self.player.pos().y, x, y,
           -- TODO x2? y2? ?! Rename args.
           function(x2, y2)
             -- last tile in line must be visible
@@ -107,8 +107,8 @@ function Game:is_position_free(pos)
     return false
   end
   for key, unit in pairs(self.units) do
-    if unit.pos.x == pos.x
-        and unit.pos.y == pos.y
+    if unit.pos().x == pos.x
+        and unit.pos().y == pos.y
     then
       return false
     end
@@ -127,18 +127,18 @@ function Game:add_unit(unit)
   unit.id = #self.units
   unit.game = self -- TODO
   self.time_system.add_actor(unit, unit.id)
-  self.map[unit.pos.y][unit.pos.x].unit = true
+  self.map[unit.pos().y][unit.pos().x].unit = true
 end
 
 function Game:add_unit_ai(pos)
-  unit = Enemy.new()
-  unit.pos = pos
+  unit = Enemy(self)
+  unit.set_pos(pos)
   self:add_unit(unit)
 end
 
 function Game:add_unit_player(pos)
-  unit = Player.new()
-  unit.pos = pos
+  unit = Player(self)
+  unit.set_pos(pos)
   self:add_unit(unit)
   self.player = unit
 end
@@ -155,8 +155,8 @@ end
 function Game:unit_at(pos)
   for key, unit in pairs(self.units) do
     -- TODO Vector2:is_equal()
-    if unit.pos.y == pos.y
-        and unit.pos.x == pos.x
+    if unit.pos().y == pos.y
+        and unit.pos().x == pos.x
     then
       return unit
     end

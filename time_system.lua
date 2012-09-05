@@ -9,14 +9,13 @@ return function()
   local max_energy = 100
 
   local increment_actor_energy = function(actor)
-    actor.energy = actor.energy + actor.energy_regeneration
+    actor.regenerate_energy()
   end
 
   local do_actors_turn = function()
     for key, actor in pairs(actors) do
-      if actor.energy >= max_energy then
-        assert(actor.callback)
-        actor:callback()
+      if actor.energy() >= max_energy then
+        actor.callback()
       end
     end
   end
@@ -35,7 +34,7 @@ return function()
   self.add_actor = function(actor, id)
     assert(actors[id] == nil)
     actors[id] = actor
-    actor.energy = max_energy
+    actor.set_energy(max_energy)
   end
 
   self.remove_actor = function(actor_id)
