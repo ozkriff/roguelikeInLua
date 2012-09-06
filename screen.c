@@ -110,7 +110,7 @@ static void bresenham_line(
   }
 }
 
-static void draw_bg(Screen *screen, Uint32 color){
+static void draw_bg(Screen *screen, Uint32 color) {
   SDL_FillRect(screen->screen, NULL, color);
 }
 
@@ -223,7 +223,7 @@ typedef struct {
 } Vec2i;
 
 /* TODO */
-static Vec2i get_rendered_size(Font *font, char *s){
+static Vec2i get_rendered_size(Font *font, char *s) {
   Vec2i size;
   int y = font->h;
   int x = 0;
