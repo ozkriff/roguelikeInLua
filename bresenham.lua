@@ -2,48 +2,48 @@
 
 local Bresenham = {}
 
-function Bresenham.los(x0, y0, x1, y1, callback)
+function Bresenham.los(x1, y1, x2, y2, callback)
   local sx, sy, dx, dy
-  if x0 < x1 then
+  if x1 < x2 then
     sx = 1
-    dx = x1 - x0
+    dx = x2 - x1
   else
     sx = -1
-    dx = x0 - x1
+    dx = x1 - x2
   end
-  if y0 < y1 then
+  if y1 < y2 then
     sy = 1
-    dy = y1 - y0
+    dy = y2 - y1
   else
     sy = -1
-    dy = y0 - y1
+    dy = y1 - y2
   end
   local err = dx - dy
   local e2 = nil
-  if not callback(x0, y0) then
+  if not callback(x1, y1) then
     return false
   end
-  while not (x0 == x1 and y0 == y1) do
+  while not (x1 == x2 and y1 == y2) do
     e2 = err + err
     if e2 > -dy then
       err = err - dy
-      x0  = x0 + sx
+      x1  = x1 + sx
     end
     if e2 < dx then
       err = err + dx
-      y0  = y0 + sy
+      y1  = y1 + sy
     end
-    if not callback(x0, y0) then
+    if not callback(x1, y1) then
       return false
     end
   end
   return true
 end
 
-function Bresenham.line(x0, y0, x1, y1, callback)
+function Bresenham.line(x1, y1, x2, y2, callback)
   local points = {}
   local count = 0
-  local result = Bresenham.los(x0, y0, x1, y1, function(x, y)
+  local result = Bresenham.los(x1, y1, x2, y2, function(x, y)
     if callback and not callback(x, y) then
       return false
     end
