@@ -99,11 +99,9 @@ return function()
       --     self.map.pos.y + unit.pos.y,
       --     self.map.pos.x + unit.pos.x)
       screen:move(unit.pos().y, unit.pos().x)
-      if Bresenham.los(
-          player.pos().x, player.pos().y,
-          unit.pos().x, unit.pos().y,
-          function(x, y)
-            return map[y][x].type == 'empty'
+      if Bresenham.los(player.pos(), unit.pos(),
+          function(pos)
+            return map[pos.y][pos.x].type == 'empty'
           end)
       then
         screen:printf(self.unit_type_to_char(unit.type()))
@@ -120,14 +118,13 @@ return function()
     for y = 1, map.size().y do
       for x = 1, map.size().x do
         map[y][x].is_seen = Bresenham.los(
-            player.pos().x, player.pos().y, x, y,
-            -- TODO x2? y2? ?! Rename args.
-            function(x2, y2)
+            player.pos(), {y = y, x = x},
+            function(pos)
               -- last tile in line must be visible
-              if x2 == x and y2 == y then
+              if pos.x == x and pos.y == y then
                 return true
               else
-                return map[y2][x2].type == 'empty'
+                return map[pos.y][pos.x].type == 'empty'
               end
             end
         )

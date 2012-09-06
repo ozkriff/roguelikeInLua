@@ -127,13 +127,13 @@ local function test_main()
 end
 
 local function test_bresenham()
-  Assert.is_equal(Bresenham.line(1, 1, 1, 1),
+  Assert.is_equal(Bresenham.line({y = 1, x = 1}, {y = 1, x = 1}),
       {{y = 1, x = 1}})
-  Assert.is_equal(Bresenham.line(1, 1, 2, 2),
+  Assert.is_equal(Bresenham.line({y = 1, x = 1}, {y = 2, x = 2}),
       {{y = 1, x = 1}, {y = 2, x = 2}})
-  Assert.is_equal(Bresenham.line(3, 3, 2, 2),
+  Assert.is_equal(Bresenham.line({y = 3, x = 3}, {y = 2, x = 2}),
       {{y = 3, x = 3}, {y = 2, x = 2}})
-  Assert.is_equal(Bresenham.line(1, 1, 3, 5), {
+  Assert.is_equal(Bresenham.line({y = 1, x = 1}, {y = 5, x = 3}), {
       {y = 1, x = 1},
       {y = 2, x = 1},
       {y = 3, x = 2},

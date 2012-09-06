@@ -1,54 +1,58 @@
 -- See LICENSE file for copyright and license details
 
+local Misc = require 'misc'
+
 local Bresenham = {}
 
-function Bresenham.los(x1, y1, x2, y2, callback)
-  local sx, sy, dx, dy
-  if x1 < x2 then
-    sx = 1
-    dx = x2 - x1
+function Bresenham.los(from, to, callback)
+  local sign = {}
+  local diff = {}
+  local pos = Misc.copy(from)
+  if pos.x < to.x then
+    sign.x = 1
+    diff.x = to.x - pos.x
   else
-    sx = -1
-    dx = x1 - x2
+    sign.x = -1
+    diff.x = pos.x - to.x
   end
-  if y1 < y2 then
-    sy = 1
-    dy = y2 - y1
+  if pos.y < to.y then
+    sign.y = 1
+    diff.y = to.y - pos.y
   else
-    sy = -1
-    dy = y1 - y2
+    sign.y = -1
+    diff.y = pos.y - to.y
   end
-  local err = dx - dy
+  local err = diff.x - diff.y
   local e2 = nil
-  if not callback(x1, y1) then
+  if not callback(pos) then
     return false
   end
-  while not (x1 == x2 and y1 == y2) do
+  while not Misc.compare(pos, to) do
     e2 = err + err
-    if e2 > -dy then
-      err = err - dy
-      x1  = x1 + sx
+    if e2 > -diff.y then
+      err = err - diff.y
+      pos.x  = pos.x + sign.x
     end
-    if e2 < dx then
-      err = err + dx
-      y1  = y1 + sy
+    if e2 < diff.x then
+      err = err + diff.x
+      pos.y  = pos.y + sign.y
     end
-    if not callback(x1, y1) then
+    if not callback(pos) then
       return false
     end
   end
   return true
 end
 
-function Bresenham.line(x1, y1, x2, y2, callback)
+function Bresenham.line(from, to, callback)
   local points = {}
   local count = 0
-  local result = Bresenham.los(x1, y1, x2, y2, function(x, y)
-    if callback and not callback(x, y) then
+  local result = Bresenham.los(from, to, function(pos)
+    if callback and not callback(pos) then
       return false
     end
     count = count + 1
-    points[count] = {x = x, y = y}
+    points[count] = Misc.copy(pos)
     return true
   end)
   return points, result
