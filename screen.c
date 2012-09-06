@@ -469,6 +469,40 @@ static int screen_px_print(lua_State *L) {
   return 0;
 }
 
+static int compare_mem(void *data1, void *data2, int size) {
+  int result = memcmp(data1, data2, size);
+  return result == 0;
+}
+
+static int screen_compare(lua_State *L) {
+  Screen *screen;
+  SDL_Surface *real;
+  SDL_Surface *tmp;
+  SDL_Surface *expected;
+  int is_equal;
+  int size;
+  int bpp_real;
+  int bpp_expected;
+  screen = check_screen(L, 1);
+  real = screen->screen;
+  bpp_real = real->format->BytesPerPixel;
+  tmp = IMG_Load(lua_tostring(L, 2));
+  /* convert to screen format */
+  expected = SDL_DisplayFormat(tmp);
+  bpp_expected = expected->format->BytesPerPixel;
+  SDL_FreeSurface(tmp);
+  bpp_real = expected->format->BytesPerPixel;
+  assert(expected);
+  assert(bpp_real == bpp_expected);
+  assert(real->w == expected->w);
+  assert(real->h == expected->h);
+  size = expected->w * expected->h * bpp_expected;
+  is_equal = compare_mem(real->pixels, expected->pixels, size);
+  SDL_FreeSurface(expected);
+  lua_pushboolean(L, is_equal);
+  return 1;
+}
+
 static const luaL_Reg screen_functions[] = {
   {"new", screen_new},
   {"init", screen_init},
@@ -481,6 +515,7 @@ static const luaL_Reg screen_functions[] = {
   {"delay", screen_delay},
   {"line", screen_line},
   {"px_print", screen_px_print},
+  {"compare", screen_compare},
 #if 0
   {"coords_to_tile", screen_corrds_to_pixel},
   {"coords_to_pixel", screen_coords_to_tile},

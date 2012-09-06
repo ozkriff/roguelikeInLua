@@ -7,6 +7,7 @@ local Map = require 'map'
 local Game = require 'game'
 local Misc = require 'misc'
 local Assert = require 'assert'
+local Screen = require 'screen'
 local Symbols = require 'symbols'
 local Bresenham = require 'bresenham'
 local Pathfinder = require 'pathfinder'
@@ -296,6 +297,35 @@ local function test_clamp()
   Assert.is_equal(Misc.clamp(100, 200, 300), 200)
 end
 
+local function test_screen()
+  local function prepare_screen()
+    local s = Screen.new()
+    s:init(32, 32, 32)
+    s:clear()
+    return s
+  end
+  -- TODO: Rename test images
+  local expected_img = 'img/tests/test1.png'
+  local function test_screen_line_1()
+    local s = prepare_screen()
+    s:line(1, 1, 16, 16)
+    Assert.is_true(s:compare(expected_img))
+  end
+  local function test_screen_line_2()
+    local s = prepare_screen()
+    s:line(16, 16, 1, 1)
+    Assert.is_true(s:compare(expected_img))
+  end
+  local function test_screen_line_3()
+    local s = prepare_screen()
+    s:line(15, 15, 1, 1)
+    Assert.is_false(s:compare(expected_img))
+  end
+  test_screen_line_1()
+  test_screen_line_2()
+  test_screen_line_3()
+end
+
 local function test_all()
   test_round()
   test_unittype_to_char()
@@ -305,7 +335,7 @@ local function test_all()
   test_misc_neib()
   test_m2dir()
   test_int_to_char()
-  -- test_screen()
+  test_screen()
   test_map()
   test_time_system()
   test_bresenham()
