@@ -48,7 +48,7 @@ function Bresenham.line(x1, y1, x2, y2, callback)
       return false
     end
     count = count + 1
-    points[count] = {x, y}
+    points[count] = {x = x, y = y}
     return true
   end)
   return points, result
