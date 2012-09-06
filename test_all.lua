@@ -127,18 +127,21 @@ local function test_main()
 end
 
 local function test_bresenham()
-  Assert.is_equal(Bresenham.line({y = 1, x = 1}, {y = 1, x = 1}),
-      {{y = 1, x = 1}})
-  Assert.is_equal(Bresenham.line({y = 1, x = 1}, {y = 2, x = 2}),
-      {{y = 1, x = 1}, {y = 2, x = 2}})
-  Assert.is_equal(Bresenham.line({y = 3, x = 3}, {y = 2, x = 2}),
-      {{y = 3, x = 3}, {y = 2, x = 2}})
-  Assert.is_equal(Bresenham.line({y = 1, x = 1}, {y = 5, x = 3}), {
-      {y = 1, x = 1},
-      {y = 2, x = 1},
-      {y = 3, x = 2},
-      {y = 4, x = 2},
-      {y = 5, x = 3}})
+  local a = {y = 1, x = 1}
+  local b = {y = 2, x = 2}
+  local c = {y = 3, x = 3}
+  local d = {y = 5, x = 3}
+  local a_d = {
+    a,
+    {y = 2, x = 1},
+    {y = 3, x = 2},
+    {y = 4, x = 2},
+    d
+  }
+  Assert.is_equal(Bresenham.line(a, a), {a})
+  Assert.is_equal(Bresenham.line(a, b), {a, b})
+  Assert.is_equal(Bresenham.line(c, b), {c, b})
+  Assert.is_equal(Bresenham.line(a, d), a_d)
 end
 
 local function test_pathfinder()
