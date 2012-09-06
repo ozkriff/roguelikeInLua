@@ -144,7 +144,7 @@ local function test_pathfinder()
       {1, 9, 1, 1, 1},
     }
     local map_size = {y = 5, x = 5}
-  
+
     -- Generate actual map from tiles_cost array
     local map = {
       size = {y = map_size.y, x = map_size.x},
