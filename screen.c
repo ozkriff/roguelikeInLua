@@ -136,7 +136,7 @@ static void init_colors(Screen *screen) {
   screen->colors.dark_grey = SDL_MapRGBA(f, 80, 80, 80, 255);
 }
 
-static SDL_Surface* loadimg(char *str) {
+static SDL_Surface* loadimg(const char *str) {
   SDL_Surface *original = IMG_Load(str);
   SDL_Surface *optimized;
   if (!original) {
