@@ -322,14 +322,8 @@ static int screen_move(lua_State *L) {
   assert(args_count == 3);
   screen = check_screen(L, 1);
   assert(lua_isnumber(L, 2) && lua_isnumber(L, 3));
-  /* TODO: assert() > 0 */
   screen->cursor_x = lua_tointeger(L, 3) - 1;
   screen->cursor_y = lua_tointeger(L, 2) - 1;
-#if 0
-  printf("cursor = {x = %d, y = %d}\n",
-      screen->cursor_x,
-      screen->cursor_y);
-#endif
   assert(screen->cursor_x >= 0);
   assert(screen->cursor_y >= 0);
   return 0;
