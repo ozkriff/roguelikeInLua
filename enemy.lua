@@ -61,7 +61,6 @@ return function(game)
   end
 
   self.callback = function()
-    -- print 'Enemy:do_enemy_turn()'
     if Misc.distance(game.player().pos(), pos) == 1 then
       game.log().add('Enemy attacking you!')
       energy = energy - game.action_cost().fire
