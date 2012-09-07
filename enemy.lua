@@ -36,7 +36,7 @@ return function(game)
   end
 
   local get_new_pos_simple = function()
-    local p = {y = pos.y, x = pos.x}
+    local p = Misc.copy(pos)
     if game.player().pos().x < p.x then
       p.x = p.x - 1
     end
