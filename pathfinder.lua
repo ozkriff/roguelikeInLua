@@ -39,16 +39,16 @@ return function(map)
       ['empty'] = 1,
       ['block'] = 999 -- TODO
     }
-    local newcost = t1.cost + type_to_cost[t2.type]
-    newcost = newcost + 1
+    local cost = t1.cost + type_to_cost[t2.type]
+    cost = cost + 1
     if math.abs(neib_pos.x - pos.x) ~= 0 then
-      newcost = newcost + 1
+      cost = cost + 1
     end
     if math.abs(neib_pos.y - pos.y) ~= 0 then
-      newcost = newcost + 1
+      cost = cost + 1
     end
-    if t2.cost > newcost then
-      push_position(neib_pos, pos, newcost)
+    if t2.cost > cost then
+      push_position(neib_pos, pos, cost)
     end
   end
 
