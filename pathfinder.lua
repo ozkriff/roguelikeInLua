@@ -21,40 +21,20 @@ return function(map)
   local process_neibor = function(pos, neib_pos)
     local t1 = map[pos.y][pos.x]
     local t2 = map[neib_pos.y][neib_pos.x]
-
-    -- TODO: Mark somehow that unit stands in tile
-    -- if self:unit_at(neib_pos) or not can_move_there(pos, neib_pos) then
-    --   return
-    -- end
-
-    -- if t2.unit or t2.type == 'block' then -- TODO
     if t2.unit or t2.type == 'block' then
       return
     end
-
-    -- local newcost = t1.cost + get_tile_cost(u, pos, neib_pos)
-
-    -- local newcost = t1.cost + t2.cost
     local type_to_cost = {
       ['empty'] = 1,
       ['block'] = 999 -- TODO
     }
     local newcost = t1.cost + type_to_cost[t2.type]
-
     newcost = newcost + 1
     local dx = math.abs(neib_pos.x - pos.x)
     local dy = math.abs(neib_pos.y - pos.y)
     if dx ~= 0 then newcost = newcost + 1 end
     if dy ~= 0 then newcost = newcost + 1 end
-
-    -- TODO what action points?! remove them
-    -- local action_points = get_unit_type(u->type_id)->action_points
-    -- if t2.cost > newcost and newcost <= action_points then
-    -- print('process_neibor(): cost = '
-    --     .. t2.cost .. ', newcost = ' .. newcost)
-
     if t2.cost > newcost then
-      -- print('inserting')
       table.insert(queue, neib_pos)
       map[neib_pos.y][neib_pos.x].cost = newcost
       map[neib_pos.y][neib_pos.x].parent = Misc.m2dir(neib_pos, pos)
