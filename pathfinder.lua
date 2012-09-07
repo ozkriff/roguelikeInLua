@@ -53,6 +53,7 @@ return function(map)
 
   local try_to_push_neibors = function(pos)
     assert(map.is_inboard(pos))
+    -- TODO: Get neiboorhoods list?
     for dir = 1, 8 do
       local neib_pos = Misc.neib(pos, dir)
       if map.is_inboard(neib_pos) then
@@ -67,7 +68,6 @@ return function(map)
     push_position(from, nil, 0) -- Push start position
     while #queue > 0 do
       local next_pos = table.remove(queue)
-      -- TODO: Get neiboorhoods list?
       if next_pos ~= nil then
         try_to_push_neibors(next_pos)
       end
