@@ -346,7 +346,6 @@ static int screen_move(lua_State *L) {
   return 0;
 }
 
-/* TODO: Accept Screen and namber (char code) */
 static int screen_printf(lua_State *L) {
   Screen *screen;
   SDL_Surface *surface;
