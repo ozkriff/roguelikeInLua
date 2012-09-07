@@ -50,7 +50,7 @@ return function(game)
   end
 
   -- TODO: Rename
-  local directions = {
+  local key_to_dir_map = {
     h = 'left',
     j = 'down',
     k = 'up',
@@ -82,11 +82,11 @@ return function(game)
     -- game.screen:move(pos.y, pos.x)
     -- game.screen:refresh()
     while char ~= 'f' do
-      if directions[char] then
+      if key_to_dir_map[char] then
         cursor_pos.x = cursor_pos.x
-            + direction_to_diff_map[directions[char]].x
+            + direction_to_diff_map[key_to_dir_map[char]].x
         cursor_pos.y = cursor_pos.y
-            + direction_to_diff_map[directions[char]].y
+            + direction_to_diff_map[key_to_dir_map[char]].y
         game.map().clamp_pos(cursor_pos)
         -- game.screen:move(
         --     game.map.pos.y + pos.y,
@@ -140,8 +140,8 @@ return function(game)
   local do_command = function(char)
     if char == 'q' then
       game.set_is_running(false)
-    elseif directions[char] then
-      move(directions[char])
+    elseif key_to_dir_map[char] then
+      move(key_to_dir_map[char])
     elseif char == '.' then
       game.log().add('waiting')
       energy = energy - game.action_cost().wait
