@@ -171,7 +171,7 @@ local dir_to_pos_diff = {
   {y = -1, x = -1},
 }
 
--- TODO test rename
+-- TODO rename
 -- Get tile's neiborhood by it's index.
 function Misc.neib(pos, neib_index)
   assert(neib_index >= 1 and neib_index <= 8)
@@ -180,7 +180,7 @@ function Misc.neib(pos, neib_index)
   return {y = pos.y + dy, x = pos.x + dx}
 end
 
--- TODO test rename
+-- TODO rename
 function Misc.m2dir(a, b)
   if Misc.distance(a, b) ~= 1 then
     return nil
