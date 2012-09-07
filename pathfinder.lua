@@ -39,8 +39,7 @@ return function(map)
       ['empty'] = 1,
       ['block'] = 999 -- TODO
     }
-    local cost = t1.cost + type_to_cost[t2.type]
-    cost = cost + 1
+    local cost = t1.cost + type_to_cost[t2.type] + 1
     if math.abs(neib_pos.x - pos.x) ~= 0 then
       cost = cost + 1
     end
