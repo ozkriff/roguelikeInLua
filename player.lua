@@ -82,11 +82,12 @@ return function(game)
     -- game.screen:move(pos.y, pos.x)
     -- game.screen:refresh()
     while char ~= 'f' do
-      if key_to_dir_map[char] then
+      local dir = key_to_dir_map[char]
+      if dir then
         cursor_pos.x = cursor_pos.x
-            + direction_to_diff_map[key_to_dir_map[char]].x
+            + direction_to_diff_map[dir].x
         cursor_pos.y = cursor_pos.y
-            + direction_to_diff_map[key_to_dir_map[char]].y
+            + direction_to_diff_map[dir].y
         game.map().clamp_pos(cursor_pos)
         -- game.screen:move(
         --     game.map.pos.y + pos.y,
