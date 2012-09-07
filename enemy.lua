@@ -37,16 +37,17 @@ return function(game)
 
   local get_new_pos_simple = function()
     local p = Misc.copy(pos)
-    if game.player().pos().x < p.x then
+    local destination = game.player().pos()
+    if destination.x < p.x then
       p.x = p.x - 1
     end
-    if game.player().pos().x > p.x then
+    if destination.x > p.x then
       p.x = p.x + 1
     end
-    if game.player().pos().y < p.y then
+    if destination.y < p.y then
       p.y = p.y - 1
     end
-    if game.player().pos().y > p.y then
+    if destination.y > p.y then
       p.y = p.y + 1
     end
     return p
