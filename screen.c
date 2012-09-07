@@ -203,19 +203,8 @@ static Screen* push_screen(lua_State *L) {
 }
 
 static int screen_new(lua_State *L) {
-  /* TODO */
-#if 0
-  /* int x = luaL_optint(L, 1, 0);
-  int y = luaL_optint(L, 2, 0); */
-  Screen *screen = push_screen(L);
-  screen->x = x;
-  screen->y = y;
+  push_screen(L);
   return 1;
-#else
-  Screen *screen = push_screen(L);
-  (void)screen; /* TODO */
-  return 1;
-#endif
 }
 
 typedef struct {
