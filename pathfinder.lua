@@ -63,11 +63,11 @@ return function(map)
 
   local try_to_push_neibors = function(pos)
     -- print('try_to_push_neibors(): x = '.. pos.x .. ' y = ' .. pos.y)
-    assert(map.inboard(pos))
+    assert(map.is_inboard(pos))
     for dir = 1, 8 do
       local neib_pos = Misc.neib(pos, dir)
       -- TODO: Encapsulate it?
-      if map.inboard(neib_pos) then
+      if map.is_inboard(neib_pos) then
         process_neibor(pos, neib_pos)
       end
     end

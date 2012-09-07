@@ -55,7 +55,7 @@ return function()
     pos.y = Misc.clamp(pos.y, 1, size.y)
   end
 
-  self.inboard = function(pos)
+  self.is_inboard = function(pos)
     assert(pos)
     if pos.y < 1 then
       return false
