@@ -57,8 +57,7 @@ return function(map)
       ['empty'] = 1,
       ['block'] = 999 -- TODO
     }
-    local newcost = t1.cost
-        + type_to_cost[t2.type]
+    local newcost = t1.cost + type_to_cost[t2.type]
 
     newcost = newcost + 1
     local dx = math.abs(neib_pos.x - pos.x)
