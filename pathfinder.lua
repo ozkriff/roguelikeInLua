@@ -53,12 +53,12 @@ return function(map)
     -- local newcost = t1.cost + get_tile_cost(u, pos, neib_pos)
 
     -- local newcost = t1.cost + t2.cost
-    local name_me = {
+    local type_to_cost = {
       ['empty'] = 1,
       ['block'] = 999 -- TODO
     }
     local newcost = t1.cost
-        + name_me[t2.type]
+        + type_to_cost[t2.type]
 
     newcost = newcost + 1
     local dx = math.abs(neib_pos.x - pos.x)
