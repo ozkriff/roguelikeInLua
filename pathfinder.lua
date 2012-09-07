@@ -18,24 +18,6 @@ return function(map)
     end
   end
 
-  self.inboard = function(pos)
-    assert(pos)
-    local size = map.size()
-    if pos.y < 1 then
-      return false
-    end
-    if pos.x < 1 then
-      return false
-    end
-    if pos.y > size.y then
-      return false
-    end
-    if pos.x > size.x then
-      return false
-    end
-    return true
-  end
-
   local process_neibor = function(pos, neib_pos)
     local t1 = map[pos.y][pos.x]
     local t2 = map[neib_pos.y][neib_pos.x]
@@ -81,11 +63,11 @@ return function(map)
 
   local try_to_push_neibors = function(pos)
     -- print('try_to_push_neibors(): x = '.. pos.x .. ' y = ' .. pos.y)
-    assert(self.inboard(pos))
+    assert(map.inboard(pos))
     for dir = 1, 8 do
       local neib_pos = Misc.neib(pos, dir)
       -- TODO: Encapsulate it?
-      if self.inboard(neib_pos) then
+      if map.inboard(neib_pos) then
         process_neibor(pos, neib_pos)
       end
     end

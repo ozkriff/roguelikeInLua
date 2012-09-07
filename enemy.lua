@@ -54,7 +54,7 @@ return function(game)
   end
 
   local get_new_pos_djikstra = function()
-    local pf = game.pathfinder
+    local pf = game.pathfinder()
     local path = pf.get_path(pos, game.player().pos())
     assert(#path >= 2)
     return path[2]

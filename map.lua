@@ -55,6 +55,23 @@ return function()
     pos.y = Misc.clamp(pos.y, 1, size.y)
   end
 
+  self.inboard = function(pos)
+    assert(pos)
+    if pos.y < 1 then
+      return false
+    end
+    if pos.x < 1 then
+      return false
+    end
+    if pos.y > size.y then
+      return false
+    end
+    if pos.x > size.x then
+      return false
+    end
+    return true
+  end
+
   self.is_tile_free = function(pos)
     return self[pos.y][pos.x].type == 'empty'
   end
