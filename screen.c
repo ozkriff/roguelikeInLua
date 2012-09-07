@@ -356,13 +356,8 @@ static int screen_printf(lua_State *L) {
   screen = check_screen(L, 1);
   char_code = lua_tointeger(L, 2);
   surface = screen->characters[char_code];
-#if 1
   sx = screen->offset_x + 25 * screen->cursor_x;
   sy = screen->offset_y + 25 * screen->cursor_y;
-#else
-  sx = screen->offset_x + 22 * screen->cursor_x;
-  sy = screen->offset_y + 22 * screen->cursor_y;
-#endif
   draw_image(screen, sx, sy, surface);
   return 0;
 }
