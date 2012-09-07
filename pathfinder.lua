@@ -28,7 +28,7 @@ return function(map)
     -- end
 
     -- if t2.unit or t2.type == 'block' then -- TODO
-    if t2.type == 'block' then
+    if t2.unit or t2.type == 'block' then
       return
     end
 
