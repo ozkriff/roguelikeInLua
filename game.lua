@@ -137,15 +137,8 @@ return function()
     map.draw()
     log.draw()
     draw_units()
-    -- screen:move(map.size().y + 2, 0)
-    -- screen:move(1, 1)
     screen:line(400, 100, 420, 140)
     screen:line(420, 140, 420, 200)
-    -- screen:px_print(100, 100, 'test\ntest')
-    -- screen:px_print(400, 50,
-    --     'screen:line(100, 100, 200, 100)\n\z
-    --      screen:px_print(200, 50, \n')
-    -- screen:printf(Symbols.Q)
     screen:refresh()
   end
 
