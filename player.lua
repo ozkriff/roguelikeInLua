@@ -34,21 +34,6 @@ return function(game)
     pos = new_pos
   end
 
-  local explosion = function()
-    -- TODO player need rifle to shoot!
-    -- TODO extruct to kill_unit function
-    game.log().add('firing')
-    energy = energy - game.action_cost().fire
-    for key, enemy in pairs(game.units) do
-      local d = Misc.distance(pos, enemy.pos)
-      if enemy ~= self and d <= 4 then
-        game.log().add('killed ' .. key)
-        game.time_system().remove_actor(enemy.id)
-        table.remove(game.units, key)
-      end
-    end
-  end
-
   -- TODO: Rename
   local key_to_dir_map = {
     h = 'left',
