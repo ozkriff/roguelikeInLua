@@ -34,7 +34,6 @@ return function(game)
     pos = new_pos
   end
 
-  -- TODO: Rename
   local key_to_dir_map = {
     h = 'left',
     j = 'down',
