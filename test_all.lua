@@ -92,40 +92,6 @@ local function test_time_system()
   -- TODO: How? Create mock units?
 end
 
--- TODO: Rewrite
-local function test_main()
-  math.randomseed(os.time())
-  local screen = TestScreen.new()
-  screen:set_pressed_keys {
-    'h', 'h', 'h',
-    -- 'f', 'g', 'f', -- TODO
-    'h', 'h', 'h', 'h',
-    -- 'f', 'g', 'f', -- TODO
-    'h', 'h', 'h',
-    'q'
-  }
-  local map = Map.new {
-    size = {y = 20, x = 60},
-    pos = {y = 2, x = 3},
-    screen = screen
-  }
-  local log = Log.new {
-    pos = {y = 20, x = 1},
-    max_size = 4,
-    screen = screen
-  }
-  local time_system = TimeSystem.new()
-  local game = Game.new {
-    screen = screen,
-    map = map,
-    log = log,
-    time_system = time_system
-  }
-  game:init()
-  game:mainloop()
-  game:close()
-end
-
 local function test_bresenham()
   local a = {y = 1, x = 1}
   local b = {y = 2, x = 2}
@@ -356,7 +322,6 @@ local function test_all()
   test_tr()
   test_priority_queue()
   -- test_pathfinder()
-  -- test_main() -- TODO fix
   print('All tests are Ok')
 end
 
