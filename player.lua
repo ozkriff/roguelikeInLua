@@ -80,11 +80,7 @@ return function(game)
     game.log().add('firing')
     energy = energy - game.action_cost().fire
     local d = Misc.distance(pos, enemy.pos())
-    -- TODO: extruct to Game:kill_unit(id)
-    game.log().add('killed ' .. enemy.id)
-    game.time_system().remove_actor(enemy.id)
-    local key = Misc.id_to_key(game.units(), enemy.id)
-    table.remove(game.units(), key)
+    game.kill_unit(enemy.id)
   end
 
   local move = function(direction)

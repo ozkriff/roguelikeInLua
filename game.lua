@@ -163,6 +163,13 @@ return function()
     return true
   end
 
+  self.kill_unit = function(unit_id)
+    log.add('killed ' .. unit_id)
+    time_system.remove_actor(unit_id)
+    local key = Misc.id_to_key(units, unit_id)
+    table.remove(units, key)
+  end
+
   self.get_next_command = function()
     -- print 'Game:get_next_command()'
     return Misc.int_to_char(screen:get_char())
