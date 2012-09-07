@@ -36,7 +36,6 @@ return function()
       ['empty'] = Symbols.POINT,
       ['block'] = Symbols.HASH
     }
-    -- screen:move(pos.y, pos.x)
     for y = 1, size.y do
       screen:move(y, 1)
       for x = 1, size.x do
@@ -46,7 +45,6 @@ return function()
           screen:printf(c)
         end
       end
-      -- screen:move(pos.y + y, pos.x)
     end
   end
 
