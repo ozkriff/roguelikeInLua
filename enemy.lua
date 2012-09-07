@@ -37,7 +37,6 @@ return function(game)
 
   local get_new_pos_simple = function()
     local p = {y = pos.y, x = pos.x}
-    -- TODO replace with dijkstra or a-star
     if game.player().pos().x < p.x then
       p.x = p.x - 1
     end
