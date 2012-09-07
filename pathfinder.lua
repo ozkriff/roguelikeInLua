@@ -51,7 +51,6 @@ return function(map)
   end
 
   local try_to_push_neibors = function(pos)
-    -- print('try_to_push_neibors(): x = '.. pos.x .. ' y = ' .. pos.y)
     assert(map.is_inboard(pos))
     for dir = 1, 8 do
       local neib_pos = Misc.neib(pos, dir)
@@ -62,18 +61,12 @@ return function(map)
   end
 
   local fill_map = function(from, to)
-    -- print('fill_map()')
-    assert(#queue == 0, Misc.to_string(queue)) -- TODO
+    assert(#queue == 0, Misc.to_string(queue))
     reset_tiles_cost()
-
-    -- Push start position
-    push_position(from, nil, 0)
-
+    push_position(from, nil, 0) -- Push start position
     while #queue > 0 do
       local next_pos = table.remove(queue)
       -- TODO: Get neiboorhoods list?
-      -- print('fill_map(): iteration: <<<'
-      --     .. Misc.to_string(next_pos) .. '>>>')
       if next_pos ~= nil then
         try_to_push_neibors(next_pos)
       end
