@@ -73,43 +73,10 @@ return function(map)
     end
   end
 
-  local print_map_debug_info = function()
-    print('Map: cost:')
-    for y = 1, map.size().y do
-      for x = 1, map.size().x do
-        local s = tostring(map[y][x].cost)
-        while #s < 2 do s = ' ' .. s end
-        io.write(s, ' ')
-      end
-      io.write('\n')
-    end
-    print('')
-    -- print('Map: cost:')
-    -- for y = 1, map.size().y do
-    --   for x = 1, map.size().x do
-    --     local s = tostring(map[y][x].cost)
-    --     while #s < 2 do s = ' ' .. s end
-    --     io.write(s, ' ')
-    --   end
-    --   io.write('\n')
-    -- end
-    print('')
-    print('Map: parent:')
-    for y = 1, map.size().y do
-      for x = 1, map.size().x do
-        local s = tostring(map[y][x].parent)
-        while #s < 2 do s = ' ' .. s end
-        io.write(s, ' ')
-      end
-      io.write('\n')
-    end
-  end
-
   self.get_path = function(from, to)
     assert(map)
     assert(#queue == 0)
     fill_map(from, to)
-    -- print_map_debug_info()
     assert(#queue == 0)
     local path = {}
     local pos = to
