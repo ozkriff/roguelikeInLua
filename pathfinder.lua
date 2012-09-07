@@ -41,10 +41,12 @@ return function(map)
     }
     local newcost = t1.cost + type_to_cost[t2.type]
     newcost = newcost + 1
-    local dx = math.abs(neib_pos.x - pos.x)
-    local dy = math.abs(neib_pos.y - pos.y)
-    if dx ~= 0 then newcost = newcost + 1 end
-    if dy ~= 0 then newcost = newcost + 1 end
+    if math.abs(neib_pos.x - pos.x) ~= 0 then
+      newcost = newcost + 1
+    end
+    if math.abs(neib_pos.y - pos.y) ~= 0 then
+      newcost = newcost + 1
+    end
     if t2.cost > newcost then
       push_position(neib_pos, pos, newcost)
     end
