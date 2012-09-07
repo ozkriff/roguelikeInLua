@@ -18,6 +18,17 @@ return function(map)
     end
   end
 
+  local push_position = function(pos, parent_pos, cost)
+    table.insert(queue, pos)
+    map[pos.y][pos.x].cost = cost
+    if parent_pos == nil then
+      -- special value for start position
+      map[pos.y][pos.x].parent = 0
+    else
+      map[pos.y][pos.x].parent = Misc.m2dir(pos, parent_pos)
+    end
+  end
+
   local process_neibor = function(pos, neib_pos)
     local t1 = map[pos.y][pos.x]
     local t2 = map[neib_pos.y][neib_pos.x]
@@ -35,9 +46,7 @@ return function(map)
     if dx ~= 0 then newcost = newcost + 1 end
     if dy ~= 0 then newcost = newcost + 1 end
     if t2.cost > newcost then
-      table.insert(queue, neib_pos)
-      map[neib_pos.y][neib_pos.x].cost = newcost
-      map[neib_pos.y][neib_pos.x].parent = Misc.m2dir(neib_pos, pos)
+      push_position(neib_pos, pos, newcost)
     end
   end
 
@@ -46,7 +55,6 @@ return function(map)
     assert(map.is_inboard(pos))
     for dir = 1, 8 do
       local neib_pos = Misc.neib(pos, dir)
-      -- TODO: Encapsulate it?
       if map.is_inboard(neib_pos) then
         process_neibor(pos, neib_pos)
       end
@@ -59,9 +67,7 @@ return function(map)
     reset_tiles_cost()
 
     -- Push start position
-    table.insert(queue, from)
-    map[from.y][from.x].cost = 0
-    map[from.y][from.x].parent = 0 -- special value
+    push_position(from, nil, 0)
 
     while #queue > 0 do
       local next_pos = table.remove(queue)
