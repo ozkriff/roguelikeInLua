@@ -10,6 +10,28 @@ return function(game)
   local pos = {y = 1, x = 1}
   local energy
 
+  local key_to_dir_map = {
+    h = 'left',
+    j = 'down',
+    k = 'up',
+    l = 'right',
+    y = 'up_left',
+    u = 'up_right',
+    b = 'down_left',
+    n = 'down_right'
+  }
+
+  local direction_to_diff_map = {
+    up = {x = 0, y = -1},
+    up_right = {x = 1, y = -1},
+    right = {x = 1, y = 0},
+    down_right = {x = 1, y = 1},
+    down = {x = 0, y = 1},
+    down_left = {x = -1, y = 1},
+    left = {x = -1, y = 0},
+    up_left = {x = -1, y = -1},
+  }
+
   self.type = function()
     return type
   end
@@ -33,28 +55,6 @@ return function(game)
   self.set_pos = function(new_pos)
     pos = new_pos
   end
-
-  local key_to_dir_map = {
-    h = 'left',
-    j = 'down',
-    k = 'up',
-    l = 'right',
-    y = 'up_left',
-    u = 'up_right',
-    b = 'down_left',
-    n = 'down_right'
-  }
-
-  local direction_to_diff_map = {
-    up = {x = 0, y = -1},
-    up_right = {x = 1, y = -1},
-    right = {x = 1, y = 0},
-    down_right = {x = 1, y = 1},
-    down = {x = 0, y = 1},
-    down_left = {x = -1, y = 1},
-    left = {x = -1, y = 0},
-    up_left = {x = -1, y = -1},
-  }
 
   -- TODO
   local fire = function()
