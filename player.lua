@@ -76,11 +76,6 @@ return function(game)
   local fire = function()
     local char = ' '
     local cursor_pos = {y = pos.y, x = pos.x}
-    -- game.screen:move(
-    --     game.map.pos.y + pos.y,
-    --     game.map.pos.x + pos.x)
-    -- game.screen:move(pos.y, pos.x)
-    -- game.screen:refresh()
     while char ~= 'f' do
       local dir = key_to_dir_map[char]
       if dir then
@@ -88,29 +83,18 @@ return function(game)
         cursor_pos.x = cursor_pos.x + diff.x
         cursor_pos.y = cursor_pos.y + diff.y
         game.map().clamp_pos(cursor_pos)
-        -- game.screen:move(
-        --     game.map.pos.y + pos.y,
-        --     game.map.pos.x + pos.x)
-        -- game.screen:move(cursor_pos.y, cursor_pos.x)
-        -- game.screen:refresh()
       end
       char = game.get_next_command()
     end
-
     -- TODO bresenham
-
     local enemy = game.unit_at(cursor_pos)
-
     if not enemy then
       game.log().add('No one here!')
       return
     end
-
     game.log().add('firing')
     energy = energy - game.action_cost().fire
-
     local d = Misc.distance(pos, enemy.pos())
-
     -- TODO: extruct to Game:kill_unit(id)
     game.log().add('killed ' .. enemy.id)
     game.time_system().remove_actor(enemy.id)
