@@ -2,43 +2,47 @@
 
 local Misc = require 'misc'
 
-return function()
-  local self = {}
+local Log = {}
+Log.__index = Log
 
-  local strings = {}
-  local max_size = 10
-  local pos = {y = 1, x = 1}
-  local screen
-
-  self.draw = function()
-    local i = 1
-    while strings[i] and i <= max_size do
-      screen:px_print(
-          pos.y + i * 10, pos.x,
-          strings[i])
-      i = i + 1
-    end
-  end
-
-  self.add = function(string)
-    table.insert(strings, 1, string)
-  end
-
-  self.set_screen = function(new_screen)
-    screen = new_screen
-  end
-
-  self.set_max_size = function(new_max_size)
-    max_size = new_max_size
-  end
-
-  self.set_pos = function(new_pos)
-    pos = Misc.copy(new_pos)
-  end
-
-  self.pos = function()
-    return pos
-  end
-
-  return self
+Log.new = function()
+  local self = {
+    _strings = {},
+    _max_size = 10,
+    _pos = {y = 1, x = 1},
+    _screen
+  }
+  return setmetatable(self, Log)
 end
+
+Log.draw = function(self)
+  local i = 1
+  while self._strings[i] and i <= self._max_size do
+    self._screen:px_print(
+        self._pos.y + i * 10, self._pos.x,
+        self._strings[i])
+    i = i + 1
+  end
+end
+
+Log.add = function(self, string)
+  table.insert(self._strings, 1, string)
+end
+
+Log.set_screen = function(self, screen)
+  self._screen = screen
+end
+
+Log.set_max_size = function(self, new_max_size)
+  self._max_size = max_size
+end
+
+Log.set_pos = function(self, pos)
+  self._pos = Misc.copy(pos)
+end
+
+Log.pos = function(self)
+  return self._pos
+end
+
+return Log

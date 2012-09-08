@@ -1,124 +1,128 @@
 -- See LICENSE file for copyright and license details
 local Misc = require 'misc'
 
-return function(game)
-  local self = {}
+local Player = {}
+Player.__index = Player
 
-  local energy_regeneration = 10
-  local type = 'player'
-  local game = game
-  local pos = {y = 1, x = 1}
-  local energy
-
-  local key_to_dir_map = {
-    h = 'left',
-    j = 'down',
-    k = 'up',
-    l = 'right',
-    y = 'up_left',
-    u = 'up_right',
-    b = 'down_left',
-    n = 'down_right'
+Player.new = function(game)
+  local self = {
+    _energy_regeneration = 10,
+    _type = 'player',
+    _game = game,
+    _pos = {y = 1, x = 1},
+    _energy
   }
-
-  local direction_to_diff_map = {
-    up = {x = 0, y = -1},
-    up_right = {x = 1, y = -1},
-    right = {x = 1, y = 0},
-    down_right = {x = 1, y = 1},
-    down = {x = 0, y = 1},
-    down_left = {x = -1, y = 1},
-    left = {x = -1, y = 0},
-    up_left = {x = -1, y = -1},
-  }
-
-  self.type = function()
-    return type
-  end
-
-  self.energy = function()
-    return energy
-  end
-
-  self.set_energy = function(new_energy)
-    energy = new_energy
-  end
-
-  self.regenerate_energy = function()
-    energy = energy + energy_regeneration
-  end
-
-  self.pos = function()
-    return pos
-  end
-
-  self.set_pos = function(new_pos)
-    pos = new_pos
-  end
-
-  -- TODO
-  local fire = function()
-    local char = ' '
-    local cursor_pos = {y = pos.y, x = pos.x}
-    while char ~= 'f' do
-      local dir = key_to_dir_map[char]
-      if dir then
-        local diff = direction_to_diff_map[dir]
-        cursor_pos.x = cursor_pos.x + diff.x
-        cursor_pos.y = cursor_pos.y + diff.y
-        game.map().clamp_pos(cursor_pos)
-      end
-      char = game.get_next_command()
-    end
-    -- TODO bresenham
-    local enemy = game.unit_at(cursor_pos)
-    if not enemy then
-      game.log().add('No one here!')
-      return
-    end
-    game.log().add('firing')
-    energy = energy - game.action_cost().fire
-    local d = Misc.distance(pos, enemy.pos())
-    game.kill_unit(enemy.id)
-  end
-
-  local move = function(direction)
-    local new_pos = {
-      y = pos.y + direction_to_diff_map[direction].y,
-      x = pos.x + direction_to_diff_map[direction].x
-    }
-    game.map().clamp_pos(new_pos)
-    if game.is_position_free(new_pos) then
-      game.map()[pos.y][pos.x].unit = nil
-      pos = new_pos
-      game.map()[pos.y][pos.x].unit = true
-      game.update_fov()
-      game.log().add('moved ' .. direction)
-      energy = energy - game.action_cost().move
-    else
-      game.log().add('waiting')
-      energy = energy - game.action_cost().wait
-    end
-  end
-
-  local do_command = function(char)
-    if char == 'q' then
-      game.set_is_running(false)
-    elseif key_to_dir_map[char] then
-      move(key_to_dir_map[char])
-    elseif char == '.' then
-      game.log().add('waiting')
-      energy = energy - game.action_cost().wait
-    elseif char == 'f' then
-      fire()
-    end
-  end
-
-  self.callback = function()
-    game.draw()
-    do_command(game.get_next_command())
-    -- game.draw()
-  end
-
-  return self
+  return setmetatable(self, Player)
 end
+
+local key_to_dir_map = {
+  h = 'left',
+  j = 'down',
+  k = 'up',
+  l = 'right',
+  y = 'up_left',
+  u = 'up_right',
+  b = 'down_left',
+  n = 'down_right'
+}
+
+local direction_to_diff_map = {
+  up = {x = 0, y = -1},
+  up_right = {x = 1, y = -1},
+  right = {x = 1, y = 0},
+  down_right = {x = 1, y = 1},
+  down = {x = 0, y = 1},
+  down_left = {x = -1, y = 1},
+  left = {x = -1, y = 0},
+  up_left = {x = -1, y = -1},
+}
+
+Player.type = function(self)
+  return self._type
+end
+
+Player.energy = function(self)
+  return self._energy
+end
+
+Player.set_energy = function(self, energy)
+  self._energy = energy
+end
+
+Player.regenerate_energy = function(self)
+  self._energy = self._energy + self._energy_regeneration
+end
+
+Player.pos = function(self)
+  return self._pos
+end
+
+Player.set_pos = function(self, pos)
+  self._pos = pos
+end
+
+-- TODO
+Player._fire = function(self)
+  local char = ' '
+  local cursor_pos = Misc.copy(self._pos)
+  while char ~= 'f' do
+    local dir = key_to_dir_map[char]
+    if dir then
+      local diff = direction_to_diff_map[dir]
+      cursor_pos.x = cursor_pos.x + diff.x
+      cursor_pos.y = cursor_pos.y + diff.y
+      self._game:map():clamp_pos(cursor_pos)
+    end
+    char = self._game:get_next_command()
+  end
+  -- TODO bresenham
+  local enemy = self._game:unit_at(cursor_pos)
+  if not enemy then
+    self._game:log():add('No one here!')
+    return
+  end
+  self._game:log():add('firing')
+  self._energy = self._energy - self._game:action_cost().fire
+  local d = Misc.distance(self._pos, enemy:pos())
+  self._game:kill_unit(enemy.id)
+end
+
+Player._move = function(self, direction)
+  local new_pos = {
+    y = self._pos.y + direction_to_diff_map[direction].y,
+    x = self._pos.x + direction_to_diff_map[direction].x
+  }
+  self._game:map():clamp_pos(new_pos)
+  if self._game:is_position_free(new_pos) then
+    self._game:map()[self._pos.y][self._pos.x].unit = nil
+    self._pos = new_pos
+    self._game:map()[self._pos.y][self._pos.x].unit = true
+    self._game:update_fov()
+    self._game:log():add('moved ' .. direction)
+    self._energy = self._energy - self._game:action_cost().move
+  else
+    self._game:log():add('waiting')
+    self._energy = self._energy - self._game:action_cost().wait
+  end
+end
+
+Player._do_command = function(self, char)
+  if char == 'q' then
+    self._game:set_is_running(false)
+  elseif key_to_dir_map[char] then
+    self:_move(key_to_dir_map[char])
+  elseif char == '.' then
+    self._game:log():add('waiting')
+    self._energy = self._energy - self._game:action_cost().wait
+  elseif char == 'f' then
+    self:_fire()
+  end
+end
+
+Player.callback = function(self)
+  self._game:draw()
+  self:_do_command(self.game:get_next_command())
+  -- self._game:draw()
+end
+
+return Player

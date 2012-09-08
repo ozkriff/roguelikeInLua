@@ -2,45 +2,49 @@
 
 local Misc = require 'misc'
 
-return function()
-  local self = {}
+local TimeSystem = {}
+TimeSystem.__index = TimeSystem
 
-  local actors = {}
-  local max_energy = 100
-
-  local increment_actor_energy = function(actor)
-    actor.regenerate_energy()
-  end
-
-  local do_actors_turn = function()
-    for key, actor in pairs(actors) do
-      if actor.energy() >= max_energy then
-        actor.callback()
-      end
-    end
-  end
-
-  local increment_actors_energy = function()
-    for key, actor in pairs(actors) do
-      increment_actor_energy(actor)
-    end
-  end
-
-  self.step = function()
-    increment_actors_energy()
-    do_actors_turn()
-  end
-
-  self.add_actor = function(actor, id)
-    assert(actors[id] == nil)
-    actors[id] = actor
-    actor.set_energy(max_energy)
-  end
-
-  self.remove_actor = function(actor_id)
-    local key = Misc.id_to_key(actors, actor_id)
-    actors[key] = nil
-  end
-
-  return self
+TimeSystem.new = function()
+  local self = {
+    _actors = {},
+    _max_energy = 100
+  }
+  return setmetatable(self, TimeSystem)
 end
+
+TimeSystem._increment_actor_energy = function(self, actor)
+  actor:regenerate_energy()
+end
+
+TimeSystem._do_actors_turn = function(self)
+  for key, actor in pairs(self._actors) do
+    if actor:energy() >= self._max_energy then
+      actor:callback()
+    end
+  end
+end
+
+TimeSystem._increment_actors_energy = function(self)
+  for key, actor in pairs(self._actors) do
+    self:_increment_actor_energy(actor)
+  end
+end
+
+TimeSystem.step = function(self)
+  self:_increment_actors_energy()
+  self:_do_actors_turn()
+end
+
+TimeSystem.add_actor = function(self, actor, id)
+  assert(self._actors[id] == nil)
+  self._actors[id] = actor
+  actor:set_energy(self._max_energy)
+end
+
+TimeSystem.remove_actor = function(self, actor_id)
+  local key = Misc.id_to_key(self._actors, actor_id)
+  self._actors[key] = nil
+end
+
+return TimeSystem

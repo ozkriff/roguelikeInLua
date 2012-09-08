@@ -15,7 +15,7 @@ local TimeSystem = require 'time_system'
 local PriorityQueue = require 'priority_queue'
 
 local function test_unittype_to_char()
-  local game = Game()
+  local game = Game.new()
   Assert.is_equal(game.unit_type_to_char('player'), Symbols.AT)
   Assert.is_equal(game.unit_type_to_char('enemy'), Symbols.Z)
   Assert.is_nil(game.unit_type_to_char('ololo'))
@@ -83,8 +83,8 @@ end
 
 local function test_map()
   -- TODO
-  local map = Map()
-  map.set_size({y = 10, x = 10})
+  local map = Map.new()
+  map:set_size({y = 10, x = 10})
   map.pos = {y = 1, x = 1}
 end
 
@@ -244,24 +244,24 @@ local function test_tr()
 end
 
 local function test_priority_queue()
-  local queue = PriorityQueue()
-  Assert.is_true(queue.is_empty())
-  queue.push('[1]', 1)
-  queue.push('[2]', 5)
-  queue.push('[3]', 5)
-  queue.push('[4]', 3)
-  Assert.is_equal(queue.pop(), '[2]')
-  Assert.is_equal(queue.pop(), '[3]')
-  Assert.is_equal(queue.pop(), '[4]')
-  Assert.is_equal(queue.pop(), '[1]')
-  Assert.is_true(queue.is_empty())
-  queue.push('[1]', -1)
-  queue.push('[2]', -5)
-  queue.push('[3]', -3)
-  Assert.is_equal(queue.pop(), '[1]')
-  Assert.is_equal(queue.pop(), '[3]')
-  Assert.is_equal(queue.pop(), '[2]')
-  Assert.is_true(queue.is_empty())
+  local queue = PriorityQueue.new()
+  Assert.is_true(queue:is_empty())
+  queue:push('[1]', 1)
+  queue:push('[2]', 5)
+  queue:push('[3]', 5)
+  queue:push('[4]', 3)
+  Assert.is_equal(queue:pop(), '[2]')
+  Assert.is_equal(queue:pop(), '[3]')
+  Assert.is_equal(queue:pop(), '[4]')
+  Assert.is_equal(queue:pop(), '[1]')
+  Assert.is_true(queue:is_empty())
+  queue:push('[1]', -1)
+  queue:push('[2]', -5)
+  queue:push('[3]', -3)
+  Assert.is_equal(queue:pop(), '[1]')
+  Assert.is_equal(queue:pop(), '[3]')
+  Assert.is_equal(queue:pop(), '[2]')
+  Assert.is_true(queue:is_empty())
 end
 
 local function test_clamp()

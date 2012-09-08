@@ -2,87 +2,91 @@
 
 local Misc = require 'misc'
 
-return function(game)
-  local self = {}
+local Enemy = {}
+Enemy.__index = Enemy
 
-  local energy_regeneration = 5
-  local type = 'enemy'
-  local game = game
-  local pos = {y = 1, x = 1}
-  local energy
-
-  self.type = function()
-    return type
-  end
-
-  self.energy = function()
-    return energy
-  end
-
-  self.set_energy = function(new_energy)
-    energy = new_energy
-  end
-
-  self.regenerate_energy = function()
-    energy = energy + energy_regeneration
-  end
-
-  self.pos = function()
-    return pos
-  end
-
-  self.set_pos = function(new_pos)
-    pos = new_pos
-  end
-
-  local get_new_pos_simple = function()
-    local p = Misc.copy(pos)
-    local destination = game.player().pos()
-    if destination.x < p.x then
-      p.x = p.x - 1
-    end
-    if destination.x > p.x then
-      p.x = p.x + 1
-    end
-    if destination.y < p.y then
-      p.y = p.y - 1
-    end
-    if destination.y > p.y then
-      p.y = p.y + 1
-    end
-    return p
-  end
-
-  local get_new_pos_djikstra = function()
-    local path = game.pathfinder().get_path(
-        pos, game.player().pos())
-    assert(#path >= 2)
-    return path[2]
-  end
-
-  self.callback = function()
-    if Misc.distance(game.player().pos(), pos) == 1 then
-      game.log().add('Enemy attacking you!')
-      energy = energy - game.action_cost().fire
-      return
-    end
-    local dist = Misc.distance(game.player().pos(), pos)
-    if dist < game.max_see_distance() then
-      -- local new_pos = get_new_pos_djikstra()
-      local new_pos = get_new_pos_simple()
-      if game.is_position_free(new_pos) then
-        game.map()[pos.y][pos.x].unit = nil
-        pos = new_pos
-        game.map()[pos.y][pos.x].unit = true
-        energy = energy - game.action_cost().move
-      else
-        energy = energy - game.action_cost().wait
-      end
-      game.map().clamp_pos(pos)
-    else
-      energy = energy - game.action_cost().wait
-    end
-  end
-
-  return self
+Enemy.new = function(game)
+  local self = {
+    _energy_regeneration = 5,
+    _type = 'enemy',
+    _game = game,
+    _pos = {y = 1, x = 1},
+    _energy
+  }
+  return setmetatable(self, Enemy)
 end
+
+Enemy.type = function(self)
+  return self._type
+end
+
+Enemy.energy = function(self)
+  return self._energy
+end
+
+Enemy.set_energy = function(self, energy)
+  self._energy = energy
+end
+
+Enemy.regenerate_energy = function(self)
+  self._energy = self._energy + self._energy_regeneration
+end
+
+Enemy.pos = function(self)
+  return self._pos
+end
+
+Enemy.set_pos = function(self, pos)
+  self._pos = pos
+end
+
+Enemy._get_new_pos_simple = function(self)
+  local p = Misc.copy(self._pos)
+  local destination = self._game:player():pos()
+  if destination.x < p.x then
+    p.x = p.x - 1
+  end
+  if destination.x > p.x then
+    p.x = p.x + 1
+  end
+  if destination.y < p.y then
+    p.y = p.y - 1
+  end
+  if destination.y > p.y then
+    p.y = p.y + 1
+  end
+  return p
+end
+
+Enemy._get_new_pos_djikstra = function(self)
+  local path = self._game:pathfinder():get_path(
+      self._pos, self._game:player():pos())
+  assert(#path >= 2)
+  return path[2]
+end
+
+Enemy.callback = function(self)
+  if Misc.distance(self._game:player():pos(), self._pos) == 1 then
+    self._game:log():add('Enemy attacking you!')
+    self._energy = self._energy - self._game:action_cost().fire
+    return
+  end
+  local dist = Misc.distance(self._game:player():pos(), self._pos)
+  if dist < self._game:max_see_distance() then
+    -- local new_pos = self:_get_new_pos_djikstra()
+    local new_pos = self:_get_new_pos_simple()
+    if self._game:is_position_free(new_pos) then
+      self._game:map()[self._pos.y][self._pos.x].unit = nil
+      self._pos = new_pos
+      self._game:map()[self._pos.y][self._pos.x].unit = true
+      self._energy = self._energy - self._game:action_cost().move
+    else
+      self._energy = self._energy - self._game:action_cost().wait
+    end
+    self._game:map():clamp_pos(self._pos)
+  else
+    self._energy = self._energy - self._game:action_cost().wait
+  end
+end
+
+return Enemy
