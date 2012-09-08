@@ -481,6 +481,19 @@ static int screen_compare(lua_State *L) {
   return 1;
 }
 
+static int screen_tile_to_pixel(lua_State *L) {
+  Screen *screen;
+  Vec2i pos;
+  screen = check_screen(L, 1);
+  pos.y = lua_tointeger(L, 2) - 1;
+  pos.x = lua_tointeger(L, 3) - 1;
+  pos.y = screen->offset_y + pos.y * 25;
+  pos.x = screen->offset_x + pos.x * 25;
+  lua_pushinteger(L, pos.x);
+  lua_pushinteger(L, pos.y);
+  return 2;
+}
+
 static const luaL_Reg screen_functions[] = {
   {"new", screen_new},
   {"init", screen_init},
@@ -494,6 +507,7 @@ static const luaL_Reg screen_functions[] = {
   {"line", screen_line},
   {"px_print", screen_px_print},
   {"compare", screen_compare},
+  {"tile_to_pixel", screen_tile_to_pixel},
 #if 0
   {"coords_to_tile", screen_corrds_to_pixel},
   {"coords_to_pixel", screen_coords_to_tile},

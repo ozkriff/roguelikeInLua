@@ -297,9 +297,18 @@ local function test_screen()
     s:line(15, 15, 1, 1)
     Assert.is_false(s:compare(expected_img))
   end
+  local function test_screen_tile_to_pixel()
+    local y = 10
+    local x = 10
+    local s = prepare_screen()
+    local y2, x2 = s:tile_to_pixel(y, x)
+    Assert.is_equal((y - 1) * 25, y2)
+    Assert.is_equal((x - 1) * 25, x2)
+  end
   test_screen_line_1()
   test_screen_line_2()
   test_screen_line_3()
+  test_screen_tile_to_pixel()
 end
 
 local function test_all()
