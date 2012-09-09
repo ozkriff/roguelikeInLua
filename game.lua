@@ -168,6 +168,8 @@ Game.kill_unit = function(self, unit_id)
   self._log:add('killed ' .. unit_id)
   self._time_system:remove_actor(unit_id)
   local key = Misc.id_to_key(self._units, unit_id)
+  local unit = self._units[key]
+  self._map[unit:pos().y][unit:pos().x].unit = false
   table.remove(self._units, key)
 end
 
