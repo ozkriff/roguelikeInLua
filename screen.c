@@ -10,11 +10,6 @@
 
 #define SCREEN "Screen"
 
-/* start from 1 -> translate numbers when called from Lua. */
-/* Tile's size = 25px X 25px
- * space between tiles = 2px
- */
-
 /* NOTE: Don't forget to change in lua modules too */
 typedef enum {
   CHAR_ARROW_UP = 1,
