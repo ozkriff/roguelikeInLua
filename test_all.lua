@@ -273,38 +273,42 @@ local function test_clamp()
   Assert.is_equal(Misc.clamp(100, 200, 300), 200)
 end
 
+local function test_screen_prepare()
+  local s = Screen.new()
+  s:init(32, 32, 32)
+  s:clear()
+  return s
+end
+
+-- TODO: Rename test images
+local function test_screen_line_1()
+  local s = test_screen_prepare()
+  s:line(1, 1, 16, 16)
+  Assert.is_true(s:compare('img/tests/test1.png'))
+end
+
+local function test_screen_line_2()
+  local s = test_screen_prepare()
+  s:line(16, 16, 1, 1)
+  Assert.is_true(s:compare('img/tests/test1.png'))
+end
+
+local function test_screen_line_3()
+  local s = test_screen_prepare()
+  s:line(15, 15, 1, 1)
+  Assert.is_false(s:compare('img/tests/test1.png'))
+end
+
+local function test_screen_tile_to_pixel()
+  local y = 10
+  local x = 10
+  local s = test_screen_prepare()
+  local y2, x2 = s:tile_to_pixel(y, x)
+  Assert.is_equal((y - 1) * 25, y2)
+  Assert.is_equal((x - 1) * 25, x2)
+end
+
 local function test_screen()
-  local function prepare_screen()
-    local s = Screen.new()
-    s:init(32, 32, 32)
-    s:clear()
-    return s
-  end
-  -- TODO: Rename test images
-  local expected_img = 'img/tests/test1.png'
-  local function test_screen_line_1()
-    local s = prepare_screen()
-    s:line(1, 1, 16, 16)
-    Assert.is_true(s:compare(expected_img))
-  end
-  local function test_screen_line_2()
-    local s = prepare_screen()
-    s:line(16, 16, 1, 1)
-    Assert.is_true(s:compare(expected_img))
-  end
-  local function test_screen_line_3()
-    local s = prepare_screen()
-    s:line(15, 15, 1, 1)
-    Assert.is_false(s:compare(expected_img))
-  end
-  local function test_screen_tile_to_pixel()
-    local y = 10
-    local x = 10
-    local s = prepare_screen()
-    local y2, x2 = s:tile_to_pixel(y, x)
-    Assert.is_equal((y - 1) * 25, y2)
-    Assert.is_equal((x - 1) * 25, x2)
-  end
   test_screen_line_1()
   test_screen_line_2()
   test_screen_line_3()
