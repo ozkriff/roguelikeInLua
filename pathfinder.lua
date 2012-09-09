@@ -14,29 +14,29 @@ Pathfinder.new = function(map)
   return setmetatable(self, Pathfinder)
 end
 
-local reset_tiles_cost = function(self)
-  assert(map)
-  for y = 1, map.size().y do
-    for x = 1, map.size().x do
-      map[y][x].cost = math.huge
+Pathfinder._reset_tiles_cost = function(self)
+  assert(self._map)
+  for y = 1, self._map:size().y do
+    for x = 1, self._map:size().x do
+      self._map[y][x].cost = math.huge
     end
   end
 end
 
-local push_position = function(self, pos, parent_pos, cost)
-  table.insert(queue, pos)
-  map[pos.y][pos.x].cost = cost
+Pathfinder._push_position = function(self, pos, parent_pos, cost)
+  table.insert(self._queue, pos)
+  self._map[pos.y][pos.x].cost = cost
   if parent_pos == nil then
     -- special value for start position
-    map[pos.y][pos.x].parent = 0
+    self._map[pos.y][pos.x].parent = 0
   else
-    map[pos.y][pos.x].parent = Misc.m2dir(pos, parent_pos)
+    self._map[pos.y][pos.x].parent = Misc.m2dir(pos, parent_pos)
   end
 end
 
-local process_neibor = function(self, pos, neib_pos)
-  local t1 = map[pos.y][pos.x]
-  local t2 = map[neib_pos.y][neib_pos.x]
+Pathfinder._process_neibor = function(self, pos, neib_pos)
+  local t1 = self._map[pos.y][pos.x]
+  local t2 = self._map[neib_pos.y][neib_pos.x]
   if t2.unit or t2.type == 'block' then
     return
   end
@@ -52,43 +52,43 @@ local process_neibor = function(self, pos, neib_pos)
     cost = cost + 1
   end
   if t2.cost > cost then
-    push_position(neib_pos, pos, cost)
+    self:_push_position(neib_pos, pos, cost)
   end
 end
 
-local try_to_push_neibors = function(self, pos)
-  assert(map.is_inboard(pos))
+Pathfinder._try_to_push_neibors = function(self, pos)
+  assert(self._map:is_inboard(pos))
   -- TODO: Get neiboorhoods list?
   for dir = 1, 8 do
     local neib_pos = Misc.neib(pos, dir)
-    if map.is_inboard(neib_pos) then
-      process_neibor(pos, neib_pos)
+    if self._map:is_inboard(neib_pos) then
+      self:_process_neibor(pos, neib_pos)
     end
   end
 end
 
-local fill_map = function(self, from, to)
-  assert(#queue == 0, Misc.to_string(queue))
-  reset_tiles_cost()
-  push_position(from, nil, 0) -- Push start position
-  while #queue > 0 do
-    local next_pos = table.remove(queue)
+Pathfinder._fill_map = function(self, from, to)
+  assert(#self._queue == 0, Misc.to_string(self._queue))
+  self:_reset_tiles_cost()
+  self:_push_position(from, nil, 0) -- Push start position
+  while #self._queue > 0 do
+    local next_pos = table.remove(self._queue)
     if next_pos ~= nil then
-      try_to_push_neibors(next_pos)
+      self:_try_to_push_neibors(next_pos)
     end
   end
 end
 
 Pathfinder.get_path = function(self, from, to)
-  assert(map)
-  assert(#queue == 0)
-  fill_map(from, to)
-  assert(#queue == 0)
+  assert(self._map)
+  assert(#self._queue == 0)
+  self:_fill_map(from, to)
+  assert(#self._queue == 0)
   local path = {}
   local pos = to
-  while map[pos.y][pos.x].parent ~= 0 do
+  while self._map[pos.y][pos.x].parent ~= 0 do
     table.insert(path, 1, pos)
-    local dir = map[pos.y][pos.x].parent
+    local dir = self._map[pos.y][pos.x].parent
     pos = Misc.neib(pos, dir)
   end
   table.insert(path, 1, from) -- Add start position
