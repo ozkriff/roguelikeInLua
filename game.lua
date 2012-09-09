@@ -110,11 +110,11 @@ Game._draw_units = function(self)
           return self._map[pos.y][pos.x].type == 'empty'
         end)
     then
-      self._screen:printf(self.unit_type_to_char(unit:type()))
+      self._screen:draw_symbol(self.unit_type_to_char(unit:type()))
       self._screen:move(unit:pos().y, unit:pos().x)
-      self._screen:printf(Symbols.ARROW_UP)
+      self._screen:draw_symbol(Symbols.ARROW_UP)
     else
-      self._screen:printf(Symbols.Q)
+      self._screen:draw_symbol(Symbols.Q)
     end
   end
 end
@@ -156,7 +156,7 @@ Game._draw_line_of_fire = function(self)
   y1 = y1 + 25 / 2
   x2 = x2 + 25 / 2
   y2 = y2 + 25 / 2
-  self._screen:line(y1, x1, y2, x2)
+  self._screen:draw_line(y1, x1, y2, x2)
 end
 
 Game.draw = function(self)
@@ -164,8 +164,8 @@ Game.draw = function(self)
   self._map:draw()
   self._log:draw()
   self:_draw_units()
-  self._screen:line(400, 100, 420, 140)
-  self._screen:line(420, 140, 420, 200)
+  self._screen:draw_line(400, 100, 420, 140)
+  self._screen:draw_line(420, 140, 420, 200)
   self:_draw_line_of_fire()
   self._screen:refresh()
 end

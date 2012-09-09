@@ -329,7 +329,7 @@ static int screen_move(lua_State *L) {
   return 0;
 }
 
-static int screen_printf(lua_State *L) {
+static int screen_draw_symbol(lua_State *L) {
   Screen *screen;
   SDL_Surface *surface;
   int sx, sy;
@@ -411,7 +411,7 @@ static int screen_delay(lua_State *L) {
 }
 
 /* TODO: Color */
-static int screen_line(lua_State *L) {
+static int screen_draw_line(lua_State *L) {
   Screen *screen;
   int x0, y0, x1, y1;
   int args_count = lua_gettop(L);
@@ -431,7 +431,7 @@ static int screen_line(lua_State *L) {
 }
 
 /* TODO */
-static int screen_px_print(lua_State *L) {
+static int screen_draw_text(lua_State *L) {
   Vec2i pos;
   Screen *screen;
   int args_count = lua_gettop(L);
@@ -499,13 +499,13 @@ static const luaL_Reg screen_functions[] = {
   {"init", screen_init},
   {"close", screen_close},
   {"move", screen_move},
-  {"printf", screen_printf},
+  {"draw_symbol", screen_draw_symbol},
   {"clear", screen_clear},
   {"refresh", screen_refresh},
   {"get_char", screen_get_char},
   {"delay", screen_delay},
-  {"line", screen_line},
-  {"px_print", screen_px_print},
+  {"draw_line", screen_draw_line},
+  {"draw_text", screen_draw_text},
   {"compare", screen_compare},
   {"tile_to_pixel", screen_tile_to_pixel},
 #if 0

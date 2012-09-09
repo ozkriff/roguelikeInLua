@@ -283,19 +283,19 @@ end
 -- TODO: Rename test images
 local function test_screen_line_1()
   local s = test_screen_prepare()
-  s:line(1, 1, 16, 16)
+  s:draw_line(1, 1, 16, 16)
   Assert.is_true(s:compare('img/tests/test1.png'))
 end
 
 local function test_screen_line_2()
   local s = test_screen_prepare()
-  s:line(16, 16, 1, 1)
+  s:draw_line(16, 16, 1, 1)
   Assert.is_true(s:compare('img/tests/test1.png'))
 end
 
 local function test_screen_line_3()
   local s = test_screen_prepare()
-  s:line(15, 15, 1, 1)
+  s:draw_line(15, 15, 1, 1)
   Assert.is_false(s:compare('img/tests/test1.png'))
 end
 

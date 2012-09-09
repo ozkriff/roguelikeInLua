@@ -47,7 +47,7 @@ Map.draw = function(self)
       self._screen:move(y, x)
       local c = type_to_char_map[self[y][x].type]
       if not self[y][x].unit and self[y][x].is_seen then
-        self._screen:printf(c)
+        self._screen:draw_symbol(c)
       end
     end
   end
