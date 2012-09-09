@@ -73,8 +73,11 @@ Player._fire = function(self)
       cursor_pos.y = cursor_pos.y + diff.y
       self._game:map():clamp_pos(cursor_pos)
     end
+    self._game.target_position = cursor_pos
+    self._game:draw()
     char = self._game:get_next_command()
   end
+  self._game.target_position = nil
   -- TODO bresenham
   local enemy = self._game:unit_at(cursor_pos)
   if not enemy then

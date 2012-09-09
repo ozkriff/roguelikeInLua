@@ -24,7 +24,8 @@ Game.new = function()
     _map,
     _pathfinder,
     _log,
-    _time_system
+    _time_system,
+    target_position -- TODO: setter/getter?
   }
   return setmetatable(self, Game)
 end
@@ -142,6 +143,22 @@ Game.update_fov = function(self)
   end
 end
 
+Game._draw_line_of_fire = function(self)
+  if not self.target_position then
+    return
+  end
+  local y1, x1, y2, x2
+  y1, x1 = self._screen:tile_to_pixel(
+      self._player:pos().y, self._player:pos().x)
+  y2, x2 = self._screen:tile_to_pixel(
+      self.target_position.y, self.target_position.x)
+  x1 = x1 + 25 / 2
+  y1 = y1 + 25 / 2
+  x2 = x2 + 25 / 2
+  y2 = y2 + 25 / 2
+  self._screen:line(y1, x1, y2, x2)
+end
+
 Game.draw = function(self)
   self._screen:clear()
   self._map:draw()
@@ -149,6 +166,7 @@ Game.draw = function(self)
   self:_draw_units()
   self._screen:line(400, 100, 420, 140)
   self._screen:line(420, 140, 420, 200)
+  self:_draw_line_of_fire()
   self._screen:refresh()
 end
 
