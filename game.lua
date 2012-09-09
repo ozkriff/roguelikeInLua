@@ -119,19 +119,24 @@ Game._draw_units = function(self)
 end
 
 -- TODO test
+local function create_fov_callback(y, x, map)
+  return function(pos)
+    -- last tile in line must be visible
+    if pos.x == x and pos.y == y then
+      return true
+    else
+      return map[pos.y][pos.x].type == 'empty'
+    end
+  end
+end
+
+-- TODO test
 Game.update_fov = function(self)
   for y = 1, self._map:size().y do
     for x = 1, self._map:size().x do
       self._map[y][x].is_seen = Bresenham.los(
           self._player:pos(), {y = y, x = x},
-          function(pos)
-            -- last tile in line must be visible
-            if pos.x == x and pos.y == y then
-              return true
-            else
-              return self._map[pos.y][pos.x].type == 'empty'
-            end
-          end
+          create_fov_callback(y, x, self._map)
       )
     end
   end
