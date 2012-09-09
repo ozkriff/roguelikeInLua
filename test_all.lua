@@ -301,7 +301,7 @@ end
 
 local function test_screen_tile_to_pixel()
   local y = 10
-  local x = 10
+  local x = 5
   local s = test_screen_prepare()
   local y2, x2 = s:tile_to_pixel(y, x)
   Assert.is_equal((y - 1) * 25, y2)

@@ -489,8 +489,8 @@ static int screen_tile_to_pixel(lua_State *L) {
   pos.x = lua_tointeger(L, 3) - 1;
   pos.y = screen->offset_y + pos.y * 25;
   pos.x = screen->offset_x + pos.x * 25;
-  lua_pushinteger(L, pos.x);
   lua_pushinteger(L, pos.y);
+  lua_pushinteger(L, pos.x);
   return 2;
 }
 
