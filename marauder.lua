@@ -10,13 +10,6 @@
 -- TODO: separate MapModel and MapView
 -- TODO: FOV and LOS in C
 
--- TODO:
--- Test screen module:
--- -- create screen
--- -- draw_something.
--- -- load .png with expected image
--- -- compare pixels of this surfaces
-
 local Log = require 'log'
 local Map = require 'map'
 local Game = require 'game'
