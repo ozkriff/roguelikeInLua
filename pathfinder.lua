@@ -5,13 +5,16 @@ local Misc = require 'misc'
 local Pathfinder = {}
 Pathfinder.__index = Pathfinder
 
-Pathfinder.new = function(map)
-  assert(map)
+Pathfinder.new = function()
   local self = {
-    _map = map,
+    _map,
     _queue = {}
   }
   return setmetatable(self, Pathfinder)
+end
+
+Pathfinder.set_map = function(self, map)
+  self._map = map
 end
 
 Pathfinder._reset_tiles_cost = function(self)
