@@ -19,7 +19,7 @@ Log.draw = function(self)
   local i = 1
   while self._strings[i] and i <= self._max_size do
     self._screen:draw_text(
-        self._pos.y + i * 10, self._pos.x,
+        {y = self._pos.y + i * 10, x = self._pos.x},
         self._strings[i])
     i = i + 1
   end

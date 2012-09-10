@@ -284,9 +284,11 @@ static int screen_init(lua_State *L) {
     /* TODO: Don't die, just return error */
     exit(1);
   }
-  h = lua_tointeger(L, 2);
-  w = lua_tointeger(L, 3);
-  bpp = lua_tointeger(L, 4);
+  lua_getfield(L, 2, "y");
+  h = lua_tointeger(L, -1);
+  lua_getfield(L, 2, "x");
+  w = lua_tointeger(L, -1);
+  bpp = lua_tointeger(L, 3);
   screen->screen = SDL_SetVideoMode(
       w, h, bpp, SDL_RESIZABLE);
   SDL_WM_SetCaption("Marauder_rl", NULL);
@@ -314,11 +316,12 @@ static int screen_close(lua_State *L) {
 static int screen_move(lua_State *L) {
   Screen *screen;
   int args_count = lua_gettop(L);
-  assert(args_count == 3);
+  assert(args_count == 2);
   screen = check_screen(L, 1);
-  assert(lua_isnumber(L, 2) && lua_isnumber(L, 3));
-  screen->cursor_x = lua_tointeger(L, 3) - 1;
-  screen->cursor_y = lua_tointeger(L, 2) - 1;
+  lua_getfield(L, 2, "y");
+  screen->cursor_y = lua_tointeger(L, -1) - 1;
+  lua_getfield(L, 2, "x");
+  screen->cursor_x = lua_tointeger(L, -1) - 1;
   assert(screen->cursor_x >= 0);
   assert(screen->cursor_y >= 0);
   return 0;
@@ -410,16 +413,16 @@ static int screen_draw_line(lua_State *L) {
   Screen *screen;
   int x0, y0, x1, y1;
   int args_count = lua_gettop(L);
-  assert(args_count == 5);
+  assert(args_count == 3);
   screen = check_screen(L, 1);
-  assert(lua_isnumber(L, 2)
-      && lua_isnumber(L, 3)
-      && lua_isnumber(L, 4)
-      && lua_isnumber(L, 5));
-  y0 = lua_tointeger(L, 2) - 1;
-  x0 = lua_tointeger(L, 3) - 1;
-  y1 = lua_tointeger(L, 4) - 1;
-  x1 = lua_tointeger(L, 5) - 1;
+  lua_getfield(L, 2, "y");
+  y0 = lua_tointeger(L, -1) - 1;
+  lua_getfield(L, 2, "x");
+  x0 = lua_tointeger(L, -1) - 1;
+  lua_getfield(L, 3, "y");
+  y1 = lua_tointeger(L, -1) - 1;
+  lua_getfield(L, 3, "x");
+  x1 = lua_tointeger(L, -1) - 1;
   bresenham_line(screen->screen, x0, y0, x1, y1,
       screen->colors.white);
   return 0;
@@ -430,15 +433,15 @@ static int screen_draw_text(lua_State *L) {
   Vec2i pos;
   Screen *screen;
   int args_count = lua_gettop(L);
-  assert(args_count == 4);
-  assert(lua_isnumber(L, 2)
-      && lua_isnumber(L, 3)
-      && lua_isstring(L, 4));
-  pos.y = lua_tointeger(L, 2) - 1;
-  pos.x = lua_tointeger(L, 3) - 1;
+  assert(args_count == 3);
+  assert(lua_istable(L, 2) && lua_isstring(L, 3));
+  lua_getfield(L, 2, "y");
+  pos.y = lua_tointeger(L, -1) - 1;
+  lua_getfield(L, 2, "x");
+  pos.x = lua_tointeger(L, -1) - 1;
   screen = check_screen(L, 1);
   render_text(screen->screen, &screen->font,
-      lua_tostring(L, 4), pos);
+      lua_tostring(L, 3), pos);
   return 0;
 }
 
@@ -480,13 +483,18 @@ static int screen_tile_to_pixel(lua_State *L) {
   Screen *screen;
   Vec2i pos;
   screen = check_screen(L, 1);
-  pos.y = lua_tointeger(L, 2) - 1;
-  pos.x = lua_tointeger(L, 3) - 1;
+  lua_getfield(L, 2, "y");
+  pos.y = lua_tointeger(L, -1) - 1;
+  lua_getfield(L, 2, "x");
+  pos.x = lua_tointeger(L, -1) - 1;
   pos.y = screen->offset_y + pos.y * 25;
   pos.x = screen->offset_x + pos.x * 25;
+  lua_newtable(L);
   lua_pushinteger(L, pos.y);
+  lua_setfield(L, -2, "y");
   lua_pushinteger(L, pos.x);
-  return 2;
+  lua_setfield(L, -2, "x");
+  return 1;
 }
 
 static const luaL_Reg screen_functions[] = {

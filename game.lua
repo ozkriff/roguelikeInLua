@@ -104,14 +104,14 @@ Game._draw_units = function(self)
     -- self.screen:move(
     --     self.map.pos.y + unit.pos.y,
     --     self.map.pos.x + unit.pos.x)
-    self._screen:move(unit:pos().y, unit:pos().x)
+    self._screen:move(unit:pos())
     if Bresenham.los(self._player:pos(), unit:pos(),
         function(pos)
           return self._map[pos.y][pos.x].type == 'empty'
         end)
     then
       self._screen:draw_symbol(self.unit_type_to_char(unit:type()))
-      self._screen:move(unit:pos().y, unit:pos().x)
+      self._screen:move(unit:pos())
       self._screen:draw_symbol(Symbols.ARROW_UP)
     else
       self._screen:draw_symbol(Symbols.Q)
@@ -147,16 +147,13 @@ Game._draw_line_of_fire = function(self)
   if not self.target_position then
     return
   end
-  local y1, x1, y2, x2
-  y1, x1 = self._screen:tile_to_pixel(
-      self._player:pos().y, self._player:pos().x)
-  y2, x2 = self._screen:tile_to_pixel(
-      self.target_position.y, self.target_position.x)
-  x1 = x1 + 25 / 2
-  y1 = y1 + 25 / 2
-  x2 = x2 + 25 / 2
-  y2 = y2 + 25 / 2
-  self._screen:draw_line(y1, x1, y2, x2)
+  local a = self._screen:tile_to_pixel(self._player:pos())
+  local b = self._screen:tile_to_pixel(self.target_position)
+  a.x = a.x + 25 / 2
+  a.y = a.y + 25 / 2
+  b.x = b.x + 25 / 2
+  b.y = b.y + 25 / 2
+  self._screen:draw_line(a, b)
 end
 
 Game.draw = function(self)
@@ -164,8 +161,8 @@ Game.draw = function(self)
   self._map:draw()
   self._log:draw()
   self:_draw_units()
-  self._screen:draw_line(400, 100, 420, 140)
-  self._screen:draw_line(420, 140, 420, 200)
+  self._screen:draw_line({y = 400, x = 100}, {y = 420, x = 140})
+  self._screen:draw_line({y = 420, x = 140}, {y = 420, x = 200})
   self:_draw_line_of_fire()
   self._screen:refresh()
 end
@@ -273,7 +270,7 @@ Game.init = function(self)
   self:_init_test_obstacles()
   self:_create_units()
   self:update_fov()
-  self._screen:init(480, 640, 32)
+  self._screen:init({y = 480, x = 640}, 32)
   -- self._log:add('initialized')
 end
 

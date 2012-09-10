@@ -42,9 +42,9 @@ Map.draw = function(self)
     ['block'] = Symbols.HASH
   }
   for y = 1, self._size.y do
-    self._screen:move(y, 1)
+    self._screen:move({y = y, x = 1})
     for x = 1, self._size.x do
-      self._screen:move(y, x)
+      self._screen:move({y = y, x = x})
       local c = type_to_char_map[self[y][x].type]
       if not self[y][x].unit and self[y][x].is_seen then
         self._screen:draw_symbol(c)
