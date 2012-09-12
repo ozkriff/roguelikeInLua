@@ -67,12 +67,17 @@ local function test_misc_to_string()
   -- Assert.is_equal(Misc.to_string({3, 4}), '\'3\'\n')
 end
 
--- TODO add more tests
 local function test_misc_dump()
   Assert.is_equal(Misc.dump(1), '1')
   Assert.is_equal(Misc.dump(nil), 'nil')
   Assert.is_equal(Misc.dump({}), '{ } ')
-  -- Assert.is_equal(Misc.dump({abc, cde}), '{abc, } ')
+  Assert.is_equal(Misc.dump({a, b}), '{ } ')
+  Assert.is_equal(Misc.dump({a = 7}),
+      '{ [\'a\'] = 7, } ')
+  Assert.is_equal(Misc.dump({a = 1, b = 2}),
+      '{ [\'a\'] = 1, [\'b\'] = 2, } ')
+  Assert.is_equal(Misc.dump({a = {1, b = 2}}),
+      '{ [\'a\'] = { [1] = 1, [\'b\'] = 2, } , } ')
 end
 
 local function test_int_to_char()
