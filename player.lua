@@ -1,5 +1,6 @@
 -- See LICENSE file for copyright and license details
 local Misc = require 'misc'
+local Bresenham = require 'bresenham'
 
 local Player = {}
 Player.__index = Player
@@ -82,6 +83,14 @@ Player._fire = function(self)
   local enemy = self._game:unit_at(cursor_pos)
   if not enemy then
     self._game:log():add('No one here!')
+    return
+  end
+  if not Bresenham.los(self._pos, cursor_pos,
+      function(pos)
+        return self._game:map():tile(pos).type == 'empty'
+      end)
+  then
+    self._game:log():add('Obstacle!')
     return
   end
   self._game:log():add('firing')
