@@ -125,7 +125,6 @@ end
 Player.callback = function(self)
   self._game:draw()
   self:_do_command(self.game:get_next_command())
-  -- self._game:draw()
 end
 
 return Player
