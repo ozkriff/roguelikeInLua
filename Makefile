@@ -1,5 +1,4 @@
 lua_path = /usr/include/lua5.2
-# lua_path = /home/ozkriff/code/marauder/lua5.2/src
 # CC = tcc
 CC = gcc
 CFLAGS = -g
