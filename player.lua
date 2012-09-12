@@ -97,9 +97,9 @@ Player._move = function(self, direction)
   }
   self._game:map():clamp_pos(new_pos)
   if self._game:is_position_free(new_pos) then
-    self._game:map()[self._pos.y][self._pos.x].unit = nil
+    self._game:map():tile(self._pos).unit = nil
     self._pos = new_pos
-    self._game:map()[self._pos.y][self._pos.x].unit = true
+    self._game:map():tile(self._pos).unit = true
     self._game:update_fov()
     self._game:log():add('moved ' .. direction)
     self._energy = self._energy - self._game:action_cost().move

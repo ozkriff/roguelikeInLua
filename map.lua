@@ -8,18 +8,24 @@ Map.__index = Map
 
 Map.new = function()
   local self = {
+    _tiles,
     _size = {y = 0, x = 0},
     _screen
   }
   return setmetatable(self, Map)
 end
 
+Map.tile = function(self, pos)
+  return self._tiles[pos.y][pos.x]
+end
+
 Map.set_size = function(self, size)
   self._size = Misc.copy(size)
+  self._tiles = {}
   for y = 1, self._size.y do
-    self[y] = {}
+    self._tiles[y] = {}
     for x = 1, self._size.x do
-      self[y][x] = {
+      self._tiles[y][x] = {
         type = 'empty',
         unit = nil,
         is_seen = false,
@@ -44,9 +50,10 @@ Map.draw = function(self)
   for y = 1, self._size.y do
     self._screen:move({y = y, x = 1})
     for x = 1, self._size.x do
-      self._screen:move({y = y, x = x})
-      local c = type_to_char_map[self[y][x].type]
-      if not self[y][x].unit and self[y][x].is_seen then
+      local pos = {y = y, x = x}
+      self._screen:move(pos)
+      local c = type_to_char_map[self:tile(pos).type]
+      if not self:tile(pos).unit and self:tile(pos).is_seen then
         self._screen:draw_symbol(c)
       end
     end
@@ -76,7 +83,7 @@ Map.is_inboard = function(self, pos)
 end
 
 Map.is_tile_free = function(self, pos)
-  return self[pos.y][pos.x].type == 'empty'
+  return self:tile(pos).type == 'empty'
 end
 
 Map.get_random_pos = function(self)

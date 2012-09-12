@@ -76,9 +76,9 @@ Enemy.callback = function(self)
     -- local new_pos = self:_get_new_pos_djikstra()
     local new_pos = self:_get_new_pos_simple()
     if self._game:is_position_free(new_pos) then
-      self._game:map()[self._pos.y][self._pos.x].unit = nil
+      self._game:map():tile(self._pos).unit = nil
       self._pos = new_pos
-      self._game:map()[self._pos.y][self._pos.x].unit = true
+      self._game:map():tile(self._pos).unit = true
       self._energy = self._energy - self._game:action_cost().move
     else
       self._energy = self._energy - self._game:action_cost().wait

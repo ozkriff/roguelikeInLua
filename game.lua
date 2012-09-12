@@ -107,7 +107,7 @@ Game._draw_units = function(self)
     self._screen:move(unit:pos())
     if Bresenham.los(self._player:pos(), unit:pos(),
         function(pos)
-          return self._map[pos.y][pos.x].type == 'empty'
+          return self._map:tile(pos).type == 'empty'
         end)
     then
       self._screen:draw_symbol(self.unit_type_to_char(unit:type()))
@@ -126,7 +126,7 @@ local function create_fov_callback(y, x, map)
     if pos.x == x and pos.y == y then
       return true
     else
-      return map[pos.y][pos.x].type == 'empty'
+      return map:tile(pos).type == 'empty'
     end
   end
 end
@@ -135,8 +135,9 @@ end
 Game.update_fov = function(self)
   for y = 1, self._map:size().y do
     for x = 1, self._map:size().x do
-      self._map[y][x].is_seen = Bresenham.los(
-          self._player:pos(), {y = y, x = x},
+      local pos = {y = y, x = x}
+      self._map:tile(pos).is_seen = Bresenham.los(
+          self._player:pos(), pos,
           create_fov_callback(y, x, self._map)
       )
     end
@@ -184,7 +185,7 @@ Game.kill_unit = function(self, unit_id)
   self._time_system:remove_actor(unit_id)
   local key = Misc.id_to_key(self._units, unit_id)
   local unit = self._units[key]
-  self._map[unit:pos().y][unit:pos().x].unit = false
+  self._map:tile(unit:pos()).unit = false
   table.remove(self._units, key)
 end
 
@@ -197,7 +198,7 @@ Game._add_unit = function(self, unit)
   unit.id = #self._units
   unit.game = self -- TODO
   self._time_system:add_actor(unit, unit.id)
-  self._map[unit:pos().y][unit:pos().x].unit = true
+  self._map:tile(unit:pos()).unit = true
 end
 
 Game._add_unit_ai = function(self, pos)
@@ -237,7 +238,7 @@ Game._add_random_vertical_wall = function(self)
   local length = math.random(1, 10)
   for i = 0, length do
     if pos.y + i <= self._map:size().y then
-      self._map[pos.y + i][pos.x].type = 'block'
+      self._map:tile({y = pos.y + i, x = pos.x}).type = 'block'
     end
   end
 end
@@ -247,7 +248,7 @@ Game._add_random_horizontal_wall = function(self)
   local length = math.random(1, 10)
   for i = 0, length do
     if pos.x + i <= self._map:size().x then
-      self._map[pos.y][pos.x + i].type = 'block'
+      self._map:tile({y = pos.y, x = pos.x + i}).type = 'block'
     end
   end
 end

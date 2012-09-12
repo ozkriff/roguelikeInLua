@@ -21,25 +21,26 @@ Pathfinder._reset_tiles_cost = function(self)
   assert(self._map)
   for y = 1, self._map:size().y do
     for x = 1, self._map:size().x do
-      self._map[y][x].cost = math.huge
+      local pos = {y = y, x = x}
+      self._map:tile(pos).cost = math.huge
     end
   end
 end
 
 Pathfinder._push_position = function(self, pos, parent_pos, cost)
   table.insert(self._queue, pos)
-  self._map[pos.y][pos.x].cost = cost
+  self._map:tile(pos).cost = cost
   if parent_pos == nil then
     -- special value for start position
-    self._map[pos.y][pos.x].parent = 0
+    self._map:tile(pos).parent = 0
   else
-    self._map[pos.y][pos.x].parent = Misc.m2dir(pos, parent_pos)
+    self._map:tile(pos).parent = Misc.m2dir(pos, parent_pos)
   end
 end
 
 Pathfinder._process_neibor = function(self, pos, neib_pos)
-  local t1 = self._map[pos.y][pos.x]
-  local t2 = self._map[neib_pos.y][neib_pos.x]
+  local t1 = self._map:tile(pos)
+  local t2 = self._map:tile(neib_pos)
   if t2.unit or t2.type == 'block' then
     return
   end
@@ -89,9 +90,9 @@ Pathfinder.get_path = function(self, from, to)
   assert(#self._queue == 0)
   local path = {}
   local pos = to
-  while self._map[pos.y][pos.x].parent ~= 0 do
+  while self._map:tile(pos).parent ~= 0 do
     table.insert(path, 1, pos)
-    local dir = self._map[pos.y][pos.x].parent
+    local dir = self._map:tile(pos).parent
     pos = Misc.neib(pos, dir)
   end
   table.insert(path, 1, from) -- Add start position
