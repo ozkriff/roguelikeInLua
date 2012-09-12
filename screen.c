@@ -200,30 +200,6 @@ typedef struct {
   int x, y;
 } Vec2i;
 
-/* TODO */
-static Vec2i get_rendered_size(Font *font, char *s) {
-  Vec2i size;
-  int y = font->h;
-  int x = 0;
-  int max_x = 0;
-  int i;
-  size.y = font->h;
-  for (i = 0; s[i] != '\0'; i++) {
-    if (s[i] == '\n') {
-      y += font->h; 
-      x = 0;
-    } else {
-      x += font->w;
-      if (x > max_x) {
-        max_x = x;
-      }
-    }
-  }
-  size.x = max_x;
-  size.y = y;
-  return(size);
-}
-
 /* Go through the text.
  * If meet ' ' then move over.
  * If meet '\n' then move down and move back.
