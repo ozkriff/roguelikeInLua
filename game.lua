@@ -223,9 +223,7 @@ Game._get_free_pos = function(self)
   return pos
 end
 
-Game._create_units = function(self)
-  -- local units_count = 10 -- TODO
-  local units_count = 3
+Game._create_units = function(self, units_count)
   for i = 1, units_count do
     self:_add_unit_ai(self:_get_free_pos())
   end
@@ -276,7 +274,7 @@ Game.init = function(self)
   assert(self._time_system)
   assert(self._screen)
   self:_init_test_obstacles()
-  self:_create_units()
+  self:_create_units(3)
   self:update_fov()
   self._screen:init({y = 480, x = 640}, 32)
   -- self._log:add('initialized')
