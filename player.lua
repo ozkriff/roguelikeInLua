@@ -1,4 +1,5 @@
 -- See LICENSE file for copyright and license details
+
 local Misc = require 'misc'
 local Bresenham = require 'bresenham'
 
