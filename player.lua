@@ -80,7 +80,6 @@ Player._fire = function(self)
     char = self._game:get_next_command()
   end
   self._game.target_position = nil
-  -- TODO bresenham
   local enemy = self._game:unit_at(cursor_pos)
   if not enemy then
     self._game:log():add('No one here!')
