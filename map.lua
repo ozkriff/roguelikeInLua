@@ -40,7 +40,6 @@ Map.size = function(self)
   return self._size
 end
 
--- TODO: scrolling
 -- TODO extract draw() to map_viewer object
 Map.draw = function(self)
   local type_to_char_map = {
