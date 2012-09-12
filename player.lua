@@ -65,6 +65,7 @@ end
 
 -- TODO
 Player._fire = function(self)
+  local g = self._game -- shortcut
   local char = ' '
   local cursor_pos = Misc.copy(self._pos)
   while char ~= 'f' do
@@ -73,48 +74,49 @@ Player._fire = function(self)
       local diff = direction_to_diff_map[dir]
       cursor_pos.x = cursor_pos.x + diff.x
       cursor_pos.y = cursor_pos.y + diff.y
-      self._game:map():clamp_pos(cursor_pos)
+      g:map():clamp_pos(cursor_pos)
     end
-    self._game.target_position = cursor_pos
-    self._game:draw()
-    char = self._game:get_next_command()
+    g.target_position = cursor_pos
+    g:draw()
+    char = g:get_next_command()
   end
-  self._game.target_position = nil
-  local enemy = self._game:unit_at(cursor_pos)
+  g.target_position = nil
+  local enemy = g:unit_at(cursor_pos)
   if not enemy then
-    self._game:log():add('No one here!')
+    g:log():add('No one here!')
     return
   end
   if not Bresenham.los(self._pos, cursor_pos,
       function(pos)
-        return self._game:map():tile(pos).type == 'empty'
+        return g:map():tile(pos).type == 'empty'
       end)
   then
-    self._game:log():add('Obstacle!')
+    g:log():add('Obstacle!')
     return
   end
-  self._game:log():add('firing')
-  self._energy = self._energy - self._game:action_cost().fire
+  g:log():add('firing')
+  self._energy = self._energy - g:action_cost().fire
   local d = Misc.distance(self._pos, enemy:pos())
-  self._game:kill_unit(enemy.id)
+  g:kill_unit(enemy.id)
 end
 
 Player._move = function(self, direction)
+  local g = self._game -- shortcut
   local new_pos = {
     y = self._pos.y + direction_to_diff_map[direction].y,
     x = self._pos.x + direction_to_diff_map[direction].x
   }
-  self._game:map():clamp_pos(new_pos)
-  if self._game:is_position_free(new_pos) then
-    self._game:map():tile(self._pos).unit = nil
+  g:map():clamp_pos(new_pos)
+  if g:is_position_free(new_pos) then
+    g:map():tile(self._pos).unit = nil
     self._pos = new_pos
-    self._game:map():tile(self._pos).unit = true
-    self._game:update_fov()
-    self._game:log():add('moved ' .. direction)
-    self._energy = self._energy - self._game:action_cost().move
+    g:map():tile(self._pos).unit = true
+    g:update_fov()
+    g:log():add('moved ' .. direction)
+    self._energy = self._energy - g:action_cost().move
   else
-    self._game:log():add('waiting')
-    self._energy = self._energy - self._game:action_cost().wait
+    g:log():add('waiting')
+    self._energy = self._energy - g:action_cost().wait
   end
 end
 
