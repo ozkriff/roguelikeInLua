@@ -175,12 +175,6 @@ static void init_characters(Screen *screen) {
       = loadimg(DATA("img/chars/point.png"));
 }
 
-static Screen* to_screen(lua_State *L, int index) {
-  Screen *screen = (Screen*)lua_touserdata(L, index);
-  assert(screen);
-  return screen;
-}
-
 static Screen* check_screen(lua_State *L, int index) {
   Screen *screen;
   luaL_checktype(L, index, LUA_TUSERDATA);
