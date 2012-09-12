@@ -489,6 +489,7 @@ static const luaL_Reg screen_functions[] = {
 };
 
 static int screen_gc(lua_State *L) {
+  (void)L;
 #if 0
   printf("bye, bye, screen = %p\n",
       (void*)to_screen(L, 1));
