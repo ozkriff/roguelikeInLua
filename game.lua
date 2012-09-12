@@ -189,7 +189,6 @@ Game.kill_unit = function(self, unit_id)
 end
 
 Game.get_next_command = function(self)
-  -- print 'Game:get_next_command()'
   return Misc.int_to_char(self._screen:get_char())
 end
 
