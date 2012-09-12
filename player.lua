@@ -109,6 +109,22 @@ Player._move = function(self, direction)
   end
 end
 
+Player._scroll_map = function(self)
+  repeat
+    local char = self.game:get_next_command()
+    local dir = key_to_dir_map[char]
+    if dir then
+      local old = self._game:screen():get_map_offset()
+      local diff = direction_to_diff_map[dir]
+      assert(diff)
+      old.y = old.y - diff.y * 25 * 2
+      old.x = old.x - diff.x * 25 * 2
+      self._game:screen():set_map_offset(old)
+      self._game:draw()
+    end
+  until char == 'm' or char == 'q'
+end
+
 Player._do_command = function(self, char)
   if char == 'q' then
     self._game:set_is_running(false)
@@ -119,6 +135,8 @@ Player._do_command = function(self, char)
     self._energy = self._energy - self._game:action_cost().wait
   elseif char == 'f' then
     self:_fire()
+  elseif char == 'm' then
+    self:_scroll_map()
   end
 end
 

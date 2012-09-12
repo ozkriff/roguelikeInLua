@@ -467,6 +467,25 @@ static int screen_tile_to_pixel(lua_State *L) {
   return 1;
 }
 
+static int screen_set_map_offset(lua_State *L) {
+  Screen *screen = check_screen(L, 1);
+  lua_getfield(L, 2, "y");
+  screen->offset_y = lua_tointeger(L, -1) - 1;
+  lua_getfield(L, 2, "x");
+  screen->offset_x = lua_tointeger(L, -1) - 1;
+  return 0;
+}
+
+static int screen_get_map_offset(lua_State *L) {
+  Screen *screen = check_screen(L, 1);
+  lua_newtable(L);
+  lua_pushinteger(L, screen->offset_y + 1);
+  lua_setfield(L, -2, "y");
+  lua_pushinteger(L, screen->offset_x + 1);
+  lua_setfield(L, -2, "x");
+  return 1;
+}
+
 static const luaL_Reg screen_functions[] = {
   {"new", screen_new},
   {"init", screen_init},
@@ -485,6 +504,8 @@ static const luaL_Reg screen_functions[] = {
   {"coords_to_tile", screen_corrds_to_pixel},
   {"coords_to_pixel", screen_coords_to_tile},
 #endif
+  {"set_map_offset", screen_set_map_offset},
+  {"get_map_offset", screen_get_map_offset},
   {NULL, NULL}
 };
 
