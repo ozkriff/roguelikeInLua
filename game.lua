@@ -214,13 +214,22 @@ Game._add_unit_player = function(self, pos)
   self._player = unit
 end
 
+Game._get_free_pos = function(self)
+  local pos
+  repeat
+    pos = self._map:get_random_pos()
+    local t = self._map:tile(pos)
+  until t.type == 'empty' and not t.unit
+  return pos
+end
+
 Game._create_units = function(self)
   -- local units_count = 10 -- TODO
   local units_count = 3
   for i = 1, units_count do
-    self:_add_unit_ai(self._map:get_random_pos())
+    self:_add_unit_ai(self:_get_free_pos())
   end
-  self:_add_unit_player(self._map:get_random_pos())
+  self:_add_unit_player(self:_get_free_pos())
 end
 
 Game.unit_at = function(self, pos)
