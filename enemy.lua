@@ -66,26 +66,27 @@ Enemy._get_new_pos_djikstra = function(self)
 end
 
 Enemy.callback = function(self)
-  if Misc.distance(self._game:player():pos(), self._pos) == 1 then
-    self._game:log():add('Enemy attacking you!')
-    self._energy = self._energy - self._game:action_cost().fire
+  local g = self._game
+  if Misc.distance(g:player():pos(), self._pos) == 1 then
+    g:log():add('Enemy attacking you!')
+    self._energy = self._energy - g:action_cost().fire
     return
   end
-  local dist = Misc.distance(self._game:player():pos(), self._pos)
-  if dist < self._game:max_see_distance() then
+  local dist = Misc.distance(g:player():pos(), self._pos)
+  if dist < g:max_see_distance() then
     -- local new_pos = self:_get_new_pos_djikstra()
     local new_pos = self:_get_new_pos_simple()
-    if self._game:is_position_free(new_pos) then
-      self._game:map():tile(self._pos).unit = nil
+    if g:is_position_free(new_pos) then
+      g:map():tile(self._pos).unit = nil
       self._pos = new_pos
-      self._game:map():tile(self._pos).unit = true
-      self._energy = self._energy - self._game:action_cost().move
+      g:map():tile(self._pos).unit = true
+      self._energy = self._energy - g:action_cost().move
     else
-      self._energy = self._energy - self._game:action_cost().wait
+      self._energy = self._energy - g:action_cost().wait
     end
-    self._game:map():clamp_pos(self._pos)
+    g:map():clamp_pos(self._pos)
   else
-    self._energy = self._energy - self._game:action_cost().wait
+    self._energy = self._energy - g:action_cost().wait
   end
 end
 
