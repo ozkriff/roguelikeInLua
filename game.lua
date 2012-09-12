@@ -194,7 +194,6 @@ end
 
 Game._add_unit = function(self, unit)
   table.insert(self._units, unit)
-  -- unit.id = #self.units + 1
   unit.id = #self._units
   unit.game = self -- TODO
   self._time_system:add_actor(unit, unit.id)
