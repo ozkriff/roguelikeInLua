@@ -61,8 +61,10 @@ Map.draw = function(self)
 end
 
 Map.clamp_pos = function(self, pos)
-  pos.x = Misc.clamp(pos.x, 1, self._size.x)
-  pos.y = Misc.clamp(pos.y, 1, self._size.y)
+  return {
+    y = Misc.clamp(pos.y, 1, self._size.y),
+    x = Misc.clamp(pos.x, 1, self._size.x)
+  }
 end
 
 Map.is_inboard = function(self, pos)

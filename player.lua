@@ -74,7 +74,7 @@ Player._fire = function(self)
       local diff = direction_to_diff_map[dir]
       cursor_pos.x = cursor_pos.x + diff.x
       cursor_pos.y = cursor_pos.y + diff.y
-      g:map():clamp_pos(cursor_pos)
+      cursor_pos = g:map():clamp_pos(cursor_pos)
     end
     g.target_position = cursor_pos
     g:draw()
@@ -106,7 +106,7 @@ Player._move = function(self, direction)
     y = self._pos.y + direction_to_diff_map[direction].y,
     x = self._pos.x + direction_to_diff_map[direction].x
   }
-  g:map():clamp_pos(new_pos)
+  new_pos = g:map():clamp_pos(new_pos)
   if g:is_position_free(new_pos) then
     g:map():tile(self._pos).unit = nil
     self._pos = new_pos
