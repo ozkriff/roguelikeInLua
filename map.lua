@@ -51,8 +51,9 @@ Map.draw = function(self)
     for x = 1, self._size.x do
       local pos = {y = y, x = x}
       self._screen:move(pos)
-      local c = type_to_char_map[self:tile(pos).type]
-      if not self:tile(pos).unit and self:tile(pos).is_seen then
+      local t = self:tile(pos)
+      local c = type_to_char_map[t.type]
+      if not t.unit and t.is_seen then
         self._screen:draw_symbol(c)
       end
     end
