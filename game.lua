@@ -162,8 +162,6 @@ Game.draw = function(self)
   self._map:draw()
   self._log:draw()
   self:_draw_units()
-  self._screen:draw_line({y = 400, x = 100}, {y = 420, x = 140})
-  self._screen:draw_line({y = 420, x = 140}, {y = 420, x = 200})
   self:_draw_line_of_fire()
   self._screen:refresh()
 end
