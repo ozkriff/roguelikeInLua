@@ -1,15 +1,6 @@
 #!env lua
 -- See LICENSE file for copyright and license details
 
--- TODO: Study 'Broken Bottle' and 'Shadow' sources. Looks awesome.
--- TODO: Vec2 class?
--- TODO: colors
--- TODO: Cover *everything* with unit tests
--- TODO: unit types
--- TODO: diagonal move takes more energy!
--- TODO: separate MapModel and MapView
--- TODO: FOV and LOS in C
-
 local Log = require 'log'
 local Map = require 'map'
 local Game = require 'game'
