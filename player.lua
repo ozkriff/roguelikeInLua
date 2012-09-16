@@ -76,11 +76,11 @@ Player._fire = function(self)
       cursor_pos.y = cursor_pos.y + diff.y
       cursor_pos = g:map():clamp_pos(cursor_pos)
     end
-    g.target_position = cursor_pos
+    g:set_target_position(cursor_pos)
     g:draw()
     char = g:get_next_command()
   end
-  g.target_position = nil
+  g:set_target_position(nil)
   local enemy = g:unit_at(cursor_pos)
   if not enemy then
     g:log():add('No one here!')

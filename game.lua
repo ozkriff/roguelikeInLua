@@ -26,7 +26,7 @@ Game.new = function()
     _log,
     _log_viewer,
     _time_system,
-    target_position -- TODO: setter/getter?
+    _target_position
   }
   return setmetatable(self, Game)
 end
@@ -37,6 +37,10 @@ end
 
 Game.set_is_running = function(self, is_running)
   self._is_running = is_running
+end
+
+Game.set_target_position = function(self, target_position)
+  self._target_position = target_position
 end
 
 Game.units = function(self)
@@ -146,11 +150,11 @@ Game.update_fov = function(self)
 end
 
 Game._draw_line_of_fire = function(self)
-  if not self.target_position then
+  if not self._target_position then
     return
   end
   local a = self._screen:tile_to_pixel(self._player:pos())
-  local b = self._screen:tile_to_pixel(self.target_position)
+  local b = self._screen:tile_to_pixel(self._target_position)
   a.x = a.x + 25 / 2
   a.y = a.y + 25 / 2
   b.x = b.x + 25 / 2
