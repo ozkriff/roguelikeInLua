@@ -100,10 +100,6 @@ end
 
 Game._draw_units = function(self)
   for key, unit in pairs(self._units) do
-    -- TODO
-    -- self.screen:move(
-    --     self.map.pos.y + unit.pos.y,
-    --     self.map.pos.x + unit.pos.x)
     self._screen:move(unit:pos())
     if Bresenham.los(self._player:pos(), unit:pos(),
         function(pos)
