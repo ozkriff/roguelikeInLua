@@ -1,8 +1,6 @@
-lua_path = /usr/include/lua5.2
 # CC = tcc
 CC = gcc
 CFLAGS = -g
-CFLAGS += -I$(lua_path)
 CFLAGS += -fPIC
 CFLAGS += -std=c89 -Wall -Wextra --pedantic
 all: screen.so
