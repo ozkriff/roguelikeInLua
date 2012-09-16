@@ -19,8 +19,8 @@ Map.tile = function(self, pos)
   return self._tiles[pos.y][pos.x]
 end
 
-Map.set_size = function(self, size)
-  self._size = Misc.copy(size)
+Map._init_tiles = function(self)
+  assert(not self._tiles)
   self._tiles = {}
   for y = 1, self._size.y do
     self._tiles[y] = {}
@@ -34,6 +34,11 @@ Map.set_size = function(self, size)
       }
     end
   end
+end
+
+Map.set_size = function(self, size)
+  self._size = Misc.copy(size)
+  self:_init_tiles()
 end
 
 Map.size = function(self)
