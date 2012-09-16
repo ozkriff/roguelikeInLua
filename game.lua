@@ -24,6 +24,7 @@ Game.new = function()
     _map,
     _pathfinder,
     _log,
+    _log_viewer,
     _time_system,
     target_position -- TODO: setter/getter?
   }
@@ -76,6 +77,10 @@ end
 
 Game.set_log = function(self, log)
   self._log = log
+end
+
+Game.set_log_viewer = function(self, log_viewer)
+  self._log_viewer = log_viewer
 end
 
 Game.log = function(self)
@@ -156,7 +161,7 @@ end
 Game.draw = function(self)
   self._screen:clear()
   self._map:draw()
-  self._log:draw()
+  self._log_viewer:draw()
   self:_draw_units()
   self:_draw_line_of_fire()
   self._screen:refresh()

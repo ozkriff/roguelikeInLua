@@ -5,6 +5,7 @@ local Log = require 'log'
 local Map = require 'map'
 local Game = require 'game'
 local Screen = require 'screen'
+local LogViewer = require 'log_viewer'
 local Pathfinder = require 'pathfinder'
 local TimeSystem = require 'time_system'
 
@@ -18,14 +19,17 @@ function main()
   local pathfinder = Pathfinder.new()
   pathfinder:set_map(map)
   local log = Log.new()
-  log:set_pos({y = 300, x = 10}) -- in pixels
-  log:set_screen(screen) -- TODO: log viewer?
+  local log_viewer = LogViewer.new()
+  log_viewer:set_log(log)
+  log_viewer:set_pos({y = 300, x = 10})
+  log_viewer:set_screen(screen)
   local time_system = TimeSystem.new()
   local game = Game.new()
   game:set_screen(screen)
   game:set_map(map)
   game:set_pathfinder(pathfinder)
   game:set_log(log)
+  game:set_log_viewer(log_viewer)
   game:set_time_system(time_system)
   game:init()
   game:mainloop()

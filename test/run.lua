@@ -16,6 +16,8 @@ local function run()
   run_test_suite 'test/bresenham'
   run_test_suite 'test/priority_queue'
   run_test_suite 'test/tr'
+  run_test_suite 'test/log'
+  -- run_test_suite 'test/log_viewer'
   -- run_test_suite 'test/pathfinder'
   print('All tests are Ok')
 end

@@ -8,41 +8,23 @@ Log.__index = Log
 Log.new = function()
   local self = {
     _strings = {},
-    _max_size = 10,
-    _pos = {y = 1, x = 1},
-    _screen
   }
   return setmetatable(self, Log)
 end
 
-Log.draw = function(self)
-  local i = 1
-  while self._strings[i] and i <= self._max_size do
-    self._screen:draw_text(
-        {y = self._pos.y + i * 10, x = self._pos.x},
-        self._strings[i])
-    i = i + 1
+Log.get_last_strings = function(self, count)
+  local strings = {}
+  if not count or count == 0 then
+    return nil
   end
+  for i = 1, count do
+    table.insert(strings, self._strings[i])
+  end
+  return strings
 end
 
 Log.add = function(self, string)
   table.insert(self._strings, 1, string)
-end
-
-Log.set_screen = function(self, screen)
-  self._screen = screen
-end
-
-Log.set_max_size = function(self, new_max_size)
-  self._max_size = max_size
-end
-
-Log.set_pos = function(self, pos)
-  self._pos = Misc.copy(pos)
-end
-
-Log.pos = function(self)
-  return self._pos
 end
 
 return Log
